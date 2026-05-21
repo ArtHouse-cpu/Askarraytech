@@ -24,7 +24,7 @@ export default function Contact() {
       setForm({ name: "", email: "", message: "" });
     } catch (err) {
       toast.error(
-        getApiErrorMessage(err.response?.data?.detail) || "Couldn't send."
+        getApiErrorMessage(err.response?.data?.detail) || "Couldn't send.",
       );
     } finally {
       setLoading(false);
@@ -43,8 +43,7 @@ export default function Contact() {
             Contact
           </p>
           <h2 className="font-display font-medium text-4xl md:text-5xl lg:text-6xl tracking-tighter mt-3 leading-[1.05]">
-            Talk to a{" "}
-            <span className="text-black/40">launch partner.</span>
+            Talk to a <span className="text-black/40">launch partner.</span>
           </h2>
           <p className="mt-5 text-base md:text-lg text-black/60 max-w-xl">
             Have a quick question before booking? Drop us a note and we'll get
@@ -61,11 +60,11 @@ export default function Contact() {
                   Email
                 </p>
                 <a
-                  href="mailto:hello@askarray.tech"
+                  href="mailto: founders@askarray.in"
                   className="font-display text-lg text-black hover:text-[#B8860B]"
                   data-testid="contact-email"
                 >
-                  hello@askarray.tech
+                  founders@askarray.in
                 </a>
               </div>
             </div>
@@ -78,7 +77,8 @@ export default function Contact() {
                   Headquarters
                 </p>
                 <p className="font-display text-lg text-black">
-                  Built remote · India first
+                  #20, Commercial Complex, Nehru Nagar (E) Bhilai, C.G, India
+                  490020
                 </p>
               </div>
             </div>
@@ -138,7 +138,9 @@ export default function Contact() {
               className="w-full bg-black hover:bg-black/85 text-white rounded-full py-6"
               data-testid="contact-submit-btn"
             >
-              {loading ? "Sending…" : (
+              {loading ? (
+                "Sending…"
+              ) : (
                 <>
                   Send Message
                   <Send size={16} className="ml-2" />

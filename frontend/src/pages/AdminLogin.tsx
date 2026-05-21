@@ -64,7 +64,7 @@ export default function AdminLogin() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="hello@askarray.tech"
+              placeholder="Enter your email"
               className="mt-1.5 bg-white/5 border-white/10 text-white"
               data-testid="admin-email-input"
             />

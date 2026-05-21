@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { Link } from "react-router-dom";
 import { BRAND } from "@/lib/brand";
+import { Mail, Globe, ShieldCheck } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -45,9 +46,9 @@ export default function Footer() {
               </a>
             </li>
             <li>
-              <a href="#portfolio" className="hover:text-white">
+              {/* <a href="#portfolio" className="hover:text-white">
                 Portfolio
-              </a>
+              </a> */}
             </li>
             <li>
               <a href="#faq" className="hover:text-white">
@@ -62,38 +63,55 @@ export default function Footer() {
           </ul>
         </div>
 
-        <div>
-          <p className="text-xs uppercase tracking-[0.22em] text-white/40">
-            Reach Out
-          </p>
-          <ul className="mt-4 space-y-2.5 text-sm text-white/70">
-            <li>
-              <a
-                href="mailto:hello@askarray.tech"
-                className="hover:text-white"
-                data-testid="footer-email"
-              >
-                hello@askarray.tech
-              </a>
-            </li>
-            <li>
-              <Link
-                to="/admin/login"
-                className="hover:text-white"
-                data-testid="footer-admin-link"
-              >
-                Admin
-              </Link>
-            </li>
-          </ul>
-        </div>
+      <div>
+  <p className="text-xs uppercase tracking-[0.22em] text-white/40">
+    Reach Out
+  </p>
+
+  <ul className="mt-4 space-y-2.5 text-sm text-white/70">
+    <li>
+      <a
+        href="mailto:founders@askarray.in"
+        className="flex items-center gap-2 hover:text-white transition-colors"
+        data-testid="footer-email"
+      >
+        <Mail size={16} />
+        founders@askarray.in
+      </a>
+    </li>
+
+    <li>
+      <a
+        href="https://www.askarray.in"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center gap-2 hover:text-white transition-colors"
+        data-testid="footer-website"
+      >
+        <Globe size={16} />
+        askarray.in
+      </a>
+    </li>
+
+    <li>
+      <Link
+        to="/admin/login"
+        className="flex items-center gap-2 hover:text-white transition-colors"
+        data-testid="footer-admin-link"
+      >
+        <ShieldCheck size={16} />
+        Admin Panel
+      </Link>
+    </li>
+  </ul>
+</div>
       </div>
 
       <div className="border-t border-white/5">
         <div className="max-w-7xl mx-auto px-6 py-5 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-white/40">
           <p>
             © {new Date().getFullYear()} Ask Array Tech. Built for serious
-            founders.
+            founders. All rights reserved.
           </p>
           <p>Concierge for the startup launch.</p>
         </div>
