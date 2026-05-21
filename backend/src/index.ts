@@ -137,7 +137,9 @@ const startServer = async () => {
     
     await seedAdmin();
     await seedPortfolio();
-
+  app.get("/", (req, res) => {
+  res.send("🚀 Server is live and running...");
+  });
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
       console.log(`Server listening on port ${PORT}`);
