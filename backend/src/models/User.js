@@ -1,5 +1,5 @@
-// @ts-nocheck
-import mongoose, { Schema } from 'mongoose';
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
 
 const UserSchema = new Schema({
   id: { type: String, required: true, unique: true },
@@ -10,4 +10,6 @@ const UserSchema = new Schema({
   created_at: String,
 });
 
-export const UserModel = mongoose.model('User', UserSchema);
+const UserModel = mongoose.model('User', UserSchema);
+
+module.exports = { UserModel };

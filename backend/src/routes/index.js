@@ -1,9 +1,8 @@
-// @ts-nocheck
-import express from 'express';
-import * as publicController from '../controllers/publicController';
-import * as paymentController from '../controllers/paymentController';
-import * as authController from '../controllers/authController';
-import * as adminController from '../controllers/adminController';
+const express = require('express');
+const publicController = require('../controllers/publicController');
+const paymentController = require('../controllers/paymentController');
+const authController = require('../controllers/authController');
+const adminController = require('../controllers/adminController');
 
 const router = express.Router();
 
@@ -35,4 +34,4 @@ router.delete('/admin/slots/:slot_id', authController.getAdmin, adminController.
 router.get('/admin/portfolio', authController.getAdmin, adminController.getPortfolioAdmin);
 router.patch('/admin/portfolio/:key', authController.getAdmin, adminController.updatePortfolioVisibility);
 
-export default router;
+module.exports = router;

@@ -1,16 +1,14 @@
-// @ts-nocheck
-import { Request, Response } from 'express';
-import { BookingModel, ContactModel, SlotModel, PortfolioModel } from '../models';
-import { nowIso, generateId } from '../utils';
+const { BookingModel, ContactModel, SlotModel, PortfolioModel } = require('../models');
+const { nowIso, generateId } = require('../utils');
 
 const BOOKING_AMOUNT = 399.0;
 const BOOKING_CURRENCY = 'inr';
 
-export const getStatus = (req: Request, res: Response) => {
+const getStatus = (req, res) => {
   res.json({ service: 'Ask Array Tech API', status: 'ok' });
 };
 
-export const createBooking = async (req: Request, res: Response): Promise<any> => {
+const createBooking = async (req, res) => {
   try {
     const doc = {
       id: generateId(),
@@ -42,7 +40,7 @@ export const createBooking = async (req: Request, res: Response): Promise<any> =
   }
 };
 
-export const createContact = async (req: Request, res: Response): Promise<any> => {
+const createContact = async (req, res) => {
   try {
     const doc = {
       id: generateId(),
@@ -62,19 +60,19 @@ export const createContact = async (req: Request, res: Response): Promise<any> =
   }
 };
 
-export const getAvailableSlots = async (req: Request, res: Response) => {
+const getAvailableSlots = async (req, res) => {
   const items = await SlotModel.find({ is_booked: false, start_at: { $gt: nowIso() } }, { _id: 0, __v: 0 }).sort({ start_at: 1 });
   res.json(items);
 };
 
-export const selectBookingSlot = async (req: Request, res: Response): Promise<any> => {
+const selectBookingSlot = async (req, res) => {
   const { booking_id } = req.params;
   const { slot_id } = req.body;
   if (!slot_id) return res.status(400).json({ detail: 'slot_id is required' });
 
   const booking = await BookingModel.findOne({ id: booking_id });
   if (!booking) return res.status(404).json({ detail: 'Booking not found' });
-  if (!['lead', 'slot_selected'].includes(booking.status as string)) {
+  if (!['lead', 'slot_selected'].includes(booking.status)) {
     return res.status(400).json({ detail: 'Slot can only be picked before payment is initiated' });
   }
 
@@ -102,7 +100,16 @@ export const selectBookingSlot = async (req: Request, res: Response): Promise<an
   res.json(updated);
 };
 
-export const getPortfolio = async (req: Request, res: Response) => {
+const getPortfolio = async (req, res) => {
   const items = await PortfolioModel.find({ visible: true }, { _id: 0, __v: 0 }).sort({ order: 1 });
   res.json(items);
+};
+
+module.exports = {
+  getStatus,
+  createBooking,
+  createContact,
+  getAvailableSlots,
+  selectBookingSlot,
+  getPortfolio,
 };

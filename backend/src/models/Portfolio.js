@@ -1,5 +1,5 @@
-// @ts-nocheck
-import mongoose, { Schema } from 'mongoose';
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
 
 const PortfolioSchema = new Schema({
   key: { type: String, required: true, unique: true },
@@ -13,4 +13,6 @@ const PortfolioSchema = new Schema({
   order: Number,
 });
 
-export const PortfolioModel = mongoose.model('Portfolio', PortfolioSchema);
+const PortfolioModel = mongoose.model('Portfolio', PortfolioSchema);
+
+module.exports = { PortfolioModel };

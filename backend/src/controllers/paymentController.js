@@ -1,16 +1,14 @@
-// @ts-nocheck
-import { Request, Response } from 'express';
-import Stripe from 'stripe';
-import { BookingModel, PaymentTransactionModel, SlotModel } from '../models';
-import { nowIso, generateId } from '../utils';
+const Stripe = require('stripe');
+const { BookingModel, PaymentTransactionModel, SlotModel } = require('../models');
+const { nowIso, generateId } = require('../utils');
 
 const STRIPE_API_KEY = process.env.STRIPE_API_KEY || 'sk_test_dummy';
-const stripe = new Stripe(STRIPE_API_KEY, { apiVersion: '2024-12-18.acacia' as any });
+const stripe = new Stripe(STRIPE_API_KEY, { apiVersion: '2024-12-18.acacia' });
 
 const BOOKING_AMOUNT = 399.0;
 const BOOKING_CURRENCY = 'inr';
 
-export const checkout = async (req: Request, res: Response): Promise<any> => {
+const checkout = async (req, res) => {
   const { booking_id, origin_url } = req.body;
   const booking = await BookingModel.findOne({ id: booking_id });
   if (!booking) return res.status(404).json({ detail: 'Booking not found' });
@@ -35,9 +33,9 @@ export const checkout = async (req: Request, res: Response): Promise<any> => {
     success_url,
     cancel_url,
     metadata: {
-      booking_id: booking.id as string,
-      email: booking.email as string,
-      service: booking.service_needed as string,
+      booking_id: booking.id,
+      email: booking.email,
+      service: booking.service_needed,
     }
   });
 
@@ -65,7 +63,7 @@ export const checkout = async (req: Request, res: Response): Promise<any> => {
   res.json({ url: session.url, session_id: session.id });
 };
 
-export const paymentStatus = async (req: Request, res: Response): Promise<any> => {
+const paymentStatus = async (req, res) => {
   const txn = await PaymentTransactionModel.findOne({ session_id: req.params.session_id }, { _id: 0, __v: 0 });
   if (!txn) return res.status(404).json({ detail: 'Payment not found' });
 
@@ -99,17 +97,17 @@ export const paymentStatus = async (req: Request, res: Response): Promise<any> =
   }
 };
 
-export const stripeWebhook = async (req: Request, res: Response): Promise<any> => {
+const stripeWebhook = async (req, res) => {
   const sig = req.headers['stripe-signature'];
   let event;
   try {
-    event = stripe.webhooks.constructEvent(req.body, sig as string, process.env.STRIPE_WEBHOOK_SECRET || '');
-  } catch (err: any) {
+    event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET || '');
+  } catch (err) {
     console.error('Stripe webhook failed:', err.message);
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 
-  const session = event.data.object as any;
+  const session = event.data.object;
   const sessionId = session.id;
   const paymentStatus = session.payment_status;
 
@@ -136,4 +134,10 @@ export const stripeWebhook = async (req: Request, res: Response): Promise<any> =
   }
 
   res.json({ ok: true });
+};
+
+module.exports = {
+  checkout,
+  paymentStatus,
+  stripeWebhook,
 };

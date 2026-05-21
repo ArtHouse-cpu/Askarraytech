@@ -1,16 +1,14 @@
-// @ts-nocheck
-import { Request, Response } from 'express';
-import { BookingModel, ContactModel, SlotModel, PortfolioModel } from '../models';
-import { nowIso, generateId } from '../utils';
+const { BookingModel, ContactModel, SlotModel, PortfolioModel } = require('../models');
+const { nowIso, generateId } = require('../utils');
 
 const BOOKING_AMOUNT = 399.0;
 
-export const getBookings = async (req: Request, res: Response) => {
+const getBookings = async (req, res) => {
   const items = await BookingModel.find({}, { _id: 0, __v: 0 }).sort({ created_at: -1 });
   res.json(items);
 };
 
-export const updateBookingStatus = async (req: Request, res: Response): Promise<any> => {
+const updateBookingStatus = async (req, res) => {
   const { status } = req.body;
   const validStatuses = ['lead', 'slot_selected', 'payment_initiated', 'paid', 'cancelled', 'completed', 'refunded'];
   if (!validStatuses.includes(status)) return res.status(400).json({ detail: 'Invalid booking status' });
@@ -27,7 +25,7 @@ export const updateBookingStatus = async (req: Request, res: Response): Promise<
   res.json(updated);
 };
 
-export const getBookingsCsv = async (req: Request, res: Response) => {
+const getBookingsCsv = async (req, res) => {
   const items = await BookingModel.find({}, { _id: 0, __v: 0 }).sort({ created_at: -1 });
   res.setHeader('Content-Type', 'text/csv');
   res.setHeader('Content-Disposition', `attachment; filename="bookings_${new Date().toISOString()}.csv"`);
@@ -39,12 +37,12 @@ export const getBookingsCsv = async (req: Request, res: Response) => {
   res.send(csv);
 };
 
-export const getContacts = async (req: Request, res: Response) => {
+const getContacts = async (req, res) => {
   const items = await ContactModel.find({}, { _id: 0, __v: 0 }).sort({ created_at: -1 });
   res.json(items);
 };
 
-export const getStats = async (req: Request, res: Response) => {
+const getStats = async (req, res) => {
   const bookings_total = await BookingModel.countDocuments();
   const paid_total = await BookingModel.countDocuments({ status: 'paid' });
   const contacts_total = await ContactModel.countDocuments();
@@ -61,12 +59,12 @@ export const getStats = async (req: Request, res: Response) => {
   });
 };
 
-export const getSlots = async (req: Request, res: Response) => {
+const getSlots = async (req, res) => {
   const items = await SlotModel.find({}, { _id: 0, __v: 0 }).sort({ start_at: 1 });
   res.json(items);
 };
 
-export const createSlot = async (req: Request, res: Response): Promise<any> => {
+const createSlot = async (req, res) => {
   const { start_at, duration_minutes = 30 } = req.body;
   let start;
   try {
@@ -99,7 +97,7 @@ export const createSlot = async (req: Request, res: Response): Promise<any> => {
   }
 };
 
-export const deleteSlot = async (req: Request, res: Response): Promise<any> => {
+const deleteSlot = async (req, res) => {
   const slot = await SlotModel.findOne({ id: req.params.slot_id });
   if (!slot) return res.status(404).json({ detail: 'Slot not found' });
   if (slot.is_booked) return res.status(400).json({ detail: 'Cannot delete a booked slot' });
@@ -107,16 +105,29 @@ export const deleteSlot = async (req: Request, res: Response): Promise<any> => {
   res.json({ ok: true });
 };
 
-export const getPortfolioAdmin = async (req: Request, res: Response) => {
+const getPortfolioAdmin = async (req, res) => {
   const items = await PortfolioModel.find({}, { _id: 0, __v: 0 }).sort({ order: 1 });
   res.json(items);
 };
 
-export const updatePortfolioVisibility = async (req: Request, res: Response): Promise<any> => {
+const updatePortfolioVisibility = async (req, res) => {
   const { visible } = req.body;
   const item = await PortfolioModel.findOne({ key: req.params.key });
   if (!item) return res.status(404).json({ detail: 'Portfolio item not found' });
   await PortfolioModel.updateOne({ key: req.params.key }, { $set: { visible: Boolean(visible) } });
   const updated = await PortfolioModel.findOne({ key: req.params.key }, { _id: 0, __v: 0 });
   res.json(updated);
+};
+
+module.exports = {
+  getBookings,
+  updateBookingStatus,
+  getBookingsCsv,
+  getContacts,
+  getStats,
+  getSlots,
+  createSlot,
+  deleteSlot,
+  getPortfolioAdmin,
+  updatePortfolioVisibility,
 };

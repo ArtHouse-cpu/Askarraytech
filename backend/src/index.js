@@ -1,17 +1,12 @@
-// @ts-nocheck
-import 'dotenv/config';
-import express from 'express';
-import mongoose from 'mongoose';
-import cors from 'cors';
-import dotenv from 'dotenv';
-import bcrypt from 'bcrypt';
-import { UserModel, PortfolioModel } from './models';
-import { nowIso } from './utils';
-import { v4 as uuidv4 } from 'uuid';
-import routes from './routes';
-import { stripeWebhook } from './controllers/paymentController';
-
-dotenv.config();
+require('dotenv').config();
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+const bcrypt = require('bcrypt');
+const { UserModel, PortfolioModel } = require('./models');
+const { nowIso, generateId } = require('./utils');
+const routes = require('./routes');
+const { stripeWebhook } = require('./controllers/paymentController');
 
 const app = express();
 
@@ -98,7 +93,7 @@ const seedAdmin = async () => {
   const existing = await UserModel.findOne({ email: adminEmail });
   if (!existing) {
     await UserModel.create({
-      id: uuidv4(),
+      id: generateId(),
       email: adminEmail,
       password_hash: await bcrypt.hash(adminPassword, 10),
       role: 'admin',
@@ -137,9 +132,9 @@ const startServer = async () => {
     
     await seedAdmin();
     await seedPortfolio();
-  app.get("/", (req, res) => {
-  res.send("🚀 Server is live and running...");
-  });
+    app.get("/", (req, res) => {
+      res.send("🚀 Server is live and running...");
+    });
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
       console.log(`Server listening on port ${PORT}`);

@@ -1,5 +1,5 @@
-// @ts-nocheck
-import mongoose, { Schema } from 'mongoose';
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
 
 const BookingSchema = new Schema({
   id: { type: String, required: true, unique: true },
@@ -21,4 +21,6 @@ const BookingSchema = new Schema({
   created_at: String,
 });
 
-export const BookingModel = mongoose.model('Booking', BookingSchema);
+const BookingModel = mongoose.model('Booking', BookingSchema);
+
+module.exports = { BookingModel };

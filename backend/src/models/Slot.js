@@ -1,5 +1,5 @@
-// @ts-nocheck
-import mongoose, { Schema } from 'mongoose';
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
 
 const SlotSchema = new Schema({
   id: { type: String, required: true, unique: true },
@@ -9,4 +9,6 @@ const SlotSchema = new Schema({
   booking_id: String,
 });
 
-export const SlotModel = mongoose.model('Slot', SlotSchema);
+const SlotModel = mongoose.model('Slot', SlotSchema);
+
+module.exports = { SlotModel };

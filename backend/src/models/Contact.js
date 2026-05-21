@@ -1,5 +1,5 @@
-// @ts-nocheck
-import mongoose, { Schema } from 'mongoose';
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
 
 const ContactSchema = new Schema({
   id: { type: String, required: true, unique: true },
@@ -9,4 +9,6 @@ const ContactSchema = new Schema({
   created_at: String,
 });
 
-export const ContactModel = mongoose.model('Contact', ContactSchema);
+const ContactModel = mongoose.model('Contact', ContactSchema);
+
+module.exports = { ContactModel };

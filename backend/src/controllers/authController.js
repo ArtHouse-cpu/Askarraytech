@@ -1,15 +1,13 @@
-// @ts-nocheck
-import { Request, Response, NextFunction } from 'express';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import { UserModel } from '../models';
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const { UserModel } = require('../models');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'secret';
 const ACCESS_TOKEN_EXPIRE_MIN = 60 * 12;
 
-export const verifyPassword = async (plain: string, hashed: string) => bcrypt.compare(plain, hashed);
+const verifyPassword = async (plain, hashed) => bcrypt.compare(plain, hashed);
 
-export const createAccessToken = (userId: string, email: string) => {
+const createAccessToken = (userId, email) => {
   return jwt.sign(
     { sub: userId, email, type: 'access' },
     JWT_SECRET,
@@ -17,7 +15,7 @@ export const createAccessToken = (userId: string, email: string) => {
   );
 };
 
-export const getAdmin = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+const getAdmin = async (req, res, next) => {
   try {
     let token = '';
     const authHeader = req.headers.authorization;
@@ -27,7 +25,7 @@ export const getAdmin = async (req: Request, res: Response, next: NextFunction):
     if (!token) {
       return res.status(401).json({ detail: 'Not authenticated' });
     }
-    const payload = jwt.verify(token, JWT_SECRET) as any;
+    const payload = jwt.verify(token, JWT_SECRET);
     if (payload.type !== 'access') {
       return res.status(401).json({ detail: 'Invalid token type' });
     }
@@ -35,27 +33,35 @@ export const getAdmin = async (req: Request, res: Response, next: NextFunction):
     if (!user || user.role !== 'admin') {
       return res.status(401).json({ detail: 'Admin not found' });
     }
-    (req as any).user = user;
+    req.user = user;
     next();
   } catch (err) {
     return res.status(401).json({ detail: 'Invalid token' });
   }
 };
 
-export const login = async (req: Request, res: Response): Promise<any> => {
+const login = async (req, res) => {
   const email = (req.body.email || '').toLowerCase().trim();
   const user = await UserModel.findOne({ email });
-  if (!user || !(await verifyPassword(req.body.password, user.password_hash as string))) {
+  if (!user || !(await verifyPassword(req.body.password, user.password_hash))) {
     return res.status(401).json({ detail: 'Invalid email or password' });
   }
   if (user.role !== 'admin') {
     return res.status(403).json({ detail: 'Not an admin account' });
   }
-  const token = createAccessToken(user.id as string, user.email as string);
+  const token = createAccessToken(user.id, user.email);
   res.json({ token, email: user.email, name: user.name });
 };
 
-export const getMe = (req: Request, res: Response) => {
-  const user = (req as any).user;
+const getMe = (req, res) => {
+  const user = req.user;
   res.json({ id: user.id, email: user.email, name: user.name, role: user.role });
+};
+
+module.exports = {
+  verifyPassword,
+  createAccessToken,
+  getAdmin,
+  login,
+  getMe,
 };
