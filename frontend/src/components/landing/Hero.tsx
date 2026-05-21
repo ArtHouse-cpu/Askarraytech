@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, Sparkles, Scale, Megaphone, Code } from "lucide-react";
+import { BRAND } from "@/lib/brand";
 
 const SERVICE_CTAS = [
   {
@@ -38,69 +39,152 @@ export default function Hero({ onBookSlot }) {
       <div className="absolute inset-0 grain pointer-events-none opacity-50" />
 
       <div className="relative max-w-7xl mx-auto px-6">
-        <div className="max-w-5xl">
-          {/* Eyebrow */}
-          <div
-            className="inline-flex items-center gap-2 rounded-full border border-[#D4AF37]/35 bg-[#D4AF37]/[0.06] backdrop-blur-md px-4 py-2 animate-fade-up"
-            data-testid="hero-eyebrow"
-          >
-            <Sparkles size={13} className="text-gold" />
-            <span className="text-[11px] uppercase tracking-[0.28em] text-white/85 font-medium">
-              Founder helps founder
-            </span>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+          
+          {/* Left Column - Headline & Content */}
+          <div className="lg:col-span-7 flex flex-col justify-center">
+            
+            {/* Eyebrow */}
+            <div
+              className="inline-flex items-center gap-2 rounded-full border border-[#D4AF37]/35 bg-[#D4AF37]/[0.06] backdrop-blur-md px-4 py-2 self-start animate-fade-up"
+              data-testid="hero-eyebrow"
+            >
+              <Sparkles size={13} className="text-[#D4AF37]" />
+              <span className="text-[11px] uppercase tracking-[0.28em] text-white/85 font-medium">
+                Founder helps founder
+              </span>
+            </div>
+
+            {/* Headline */}
+            <h1
+              className="font-serif-display mt-8 text-white animate-fade-up leading-[1.1] md:leading-[1.08] tracking-tight font-medium"
+              style={{
+                fontSize: "clamp(2.75rem, 5.5vw, 4.75rem)",
+                animationDelay: "0.05s",
+              }}
+            >
+              <span className="block">Start Your Startup.</span>
+              <span className="block">Build Your Product.</span>
+              <span className="block text-[#D4AF37] italic font-serif-display">Grow Faster.</span>
+            </h1>
+
+            {/* Paragraph description */}
+            <p
+              className="mt-6 text-base md:text-lg text-white/60 max-w-xl leading-relaxed animate-fade-up"
+              style={{ animationDelay: "0.15s" }}
+            >
+              From legal setup to MVP development and marketing infrastructure — everything founders need to launch, under one roof.
+            </p>
+
+            {/* 3 service pill CTAs */}
+            <div
+              className="mt-8 flex flex-col sm:flex-row flex-wrap gap-3 animate-fade-up"
+              style={{ animationDelay: "0.25s" }}
+              data-testid="hero-cta-row"
+            >
+              {SERVICE_CTAS.map((cta) => (
+                <PillCTA
+                  key={cta.label}
+                  cta={cta}
+                  onClick={() => onBookSlot(cta.service)}
+                />
+              ))}
+            </div>
+
+            {/* Bottom Trust points */}
+            <div
+              className="mt-12 md:mt-16 flex flex-wrap gap-x-8 gap-y-3 text-[11px] tracking-[0.2em] font-semibold text-white/40 uppercase animate-fade-up"
+              style={{ animationDelay: "0.35s" }}
+            >
+              <div className="flex items-center gap-1.5">
+                <span className="text-[#D4AF37] font-bold">✓</span> LEGAL
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="text-[#D4AF37] font-bold">✓</span> PRODUCT
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="text-[#D4AF37] font-bold">✓</span> GROWTH
+              </div>
+            </div>
+
           </div>
 
-          {/* Headline — bold sans display with gold gradient fills */}
-          <h1
-            className="display-bold mt-10 text-white animate-fade-up"
-            style={{
-              fontSize: "clamp(3rem, 10vw, 10rem)",
-              animationDelay: "0.05s",
-            }}
-          >
-            <span className="block">
-              Start Your <span className="gold-gradient-text">Startup.</span>
-            </span>
-            <span className="block">
-              Build Your <span className="gold-gradient-text">Product.</span>
-            </span>
-            <span className="block gold-gradient-text">Grow Faster.</span>
-          </h1>
+          {/* Right Column - Concentric circles & Floating Badges */}
+          <div className="lg:col-span-5 flex items-center justify-center w-full mt-8 lg:mt-0">
+            <div className="relative w-full max-w-[460px] aspect-[1.05] rounded-[32px] border border-white/5 bg-[#060606]/90 overflow-hidden flex items-center justify-center p-8 shadow-3xl">
+              
+              {/* Radial gradient background glow */}
+              <div className="absolute w-[220px] h-[220px] rounded-full bg-[#D4AF37]/[0.08] blur-3xl pointer-events-none" />
 
-          {/* Sub */}
-          <p
-            className="mt-9 text-lg md:text-xl text-white/65 max-w-2xl leading-relaxed animate-fade-up"
-            style={{ animationDelay: "0.15s" }}
-          >
-            Ask Array Tech is the quiet operating partner founders bring in to
-            build it properly — legal, product, brand, and launch. One team.
-            One roadmap.
-          </p>
+              {/* Concentric rings */}
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div className="absolute w-[180px] h-[180px] rounded-full border border-white/[0.03] md:border-white/[0.04]" />
+                <div className="absolute w-[280px] h-[280px] rounded-full border border-white/[0.03] md:border-white/[0.04]" />
+                <div className="absolute w-[380px] h-[380px] rounded-full border border-white/[0.02] md:border-white/[0.03]" />
+                <div className="absolute w-[480px] h-[480px] rounded-full border border-white/[0.015] md:border-white/[0.02]" />
+              </div>
 
-          {/* 3 service pill CTAs */}
-          <div
-            className="mt-10 flex flex-col sm:flex-row flex-wrap gap-3 animate-fade-up"
-            style={{ animationDelay: "0.25s" }}
-            data-testid="hero-cta-row"
-          >
-            {SERVICE_CTAS.map((cta) => (
-              <PillCTA
-                key={cta.label}
-                cta={cta}
-                onClick={() => onBookSlot(cta.service)}
-              />
-            ))}
+              {/* Central Glowing Card */}
+              <div className="relative z-10 flex items-center justify-center">
+                {/* Gold aura backglow */}
+                <div className="absolute w-[150px] h-[150px] rounded-full bg-[#D4AF37]/15 blur-2xl pointer-events-none animate-pulse" />
+                {/* Black rounded square card */}
+                <div className="relative w-[125px] h-[125px] rounded-2xl bg-[#0a0a0a] border border-white/10 shadow-2xl flex items-center justify-center overflow-hidden">
+                  <img
+                    src={BRAND.logoMark}
+                    alt="Ask Array Monogram"
+                    className="w-14 h-14 object-contain"
+                  />
+                </div>
+              </div>
+
+              {/* Floating Badges */}
+              
+              {/* 1. Pvt Ltd - Filed */}
+              <div
+                className="absolute top-[12%] left-[8%] z-20 flex items-center gap-2 bg-black/85 border border-white/10 px-3.5 py-1.5 rounded-full shadow-lg hover:border-[#D4AF37]/35 transition-colors cursor-default"
+                style={{
+                  animation: "float-y 6s ease-in-out infinite",
+                  animationDelay: "0s",
+                }}
+              >
+                <Scale size={13} className="text-[#D4AF37]" />
+                <span className="text-[11px] font-medium tracking-wide text-white/90">
+                  Pvt Ltd - Filed
+                </span>
+              </div>
+
+              {/* 2. CTR 4.2% ↑ */}
+              <div
+                className="absolute top-[52%] right-[6%] z-20 flex items-center gap-2 bg-black/85 border border-white/10 px-3.5 py-1.5 rounded-full shadow-lg hover:border-[#D4AF37]/35 transition-colors cursor-default"
+                style={{
+                  animation: "float-y 7s ease-in-out infinite",
+                  animationDelay: "1.5s",
+                }}
+              >
+                <Megaphone size={13} className="text-[#D4AF37]" />
+                <span className="text-[11px] font-medium tracking-wide text-white/90">
+                  CTR 4.2% ↑
+                </span>
+              </div>
+
+              {/* 3. MVP - v1.2 shipped */}
+              <div
+                className="absolute bottom-[12%] left-[10%] z-20 flex items-center gap-2 bg-black/85 border border-white/10 px-3.5 py-1.5 rounded-full shadow-lg hover:border-[#D4AF37]/35 transition-colors cursor-default"
+                style={{
+                  animation: "float-y 5s ease-in-out infinite",
+                  animationDelay: "3s",
+                }}
+              >
+                <Code size={13} className="text-[#D4AF37]" />
+                <span className="text-[11px] font-medium tracking-wide text-white/90">
+                  MVP - v1.2 shipped
+                </span>
+              </div>
+
+            </div>
           </div>
 
-          <p
-            className="mt-7 text-sm text-white/45 max-w-md leading-relaxed animate-fade-up"
-            style={{ animationDelay: "0.35s" }}
-          >
-            Choose one track or run the entire 30-day launch.{" "}
-            <span className="text-white/65">
-              Only 1–5 founders onboarded each month.
-            </span>
-          </p>
         </div>
       </div>
     </section>
@@ -113,14 +197,14 @@ function PillCTA({ cta, onClick }) {
       <Button
         size="lg"
         onClick={onClick}
-        className="bg-[#D4AF37] hover:bg-[#F3C853] text-black font-medium rounded-full px-9 py-7 text-base gold-button-glow group"
+        className="bg-[#D4AF37] hover:bg-[#F3C853] text-black font-semibold rounded-full px-6 py-2.5 text-sm md:text-base h-auto gold-button-glow group transition-all duration-300"
         data-testid={cta.testid}
       >
         {cta.label}
         {cta.arrow && (
           <ArrowRight
-            size={17}
-            className="ml-2 transition-transform group-hover:translate-x-1"
+            size={16}
+            className="ml-1.5 transition-transform group-hover:translate-x-0.5"
           />
         )}
       </Button>
@@ -132,7 +216,7 @@ function PillCTA({ cta, onClick }) {
         size="lg"
         variant="ghost"
         onClick={onClick}
-        className="rounded-full px-9 py-7 text-base border border-[#D4AF37]/55 hover:border-[#D4AF37] bg-transparent hover:bg-[#D4AF37]/[0.06] text-[#D4AF37] hover:text-[#F3C853]"
+        className="rounded-full px-6 py-2.5 text-sm md:text-base h-auto border border-[#D4AF37]/50 hover:border-[#D4AF37] bg-transparent hover:bg-[#D4AF37]/[0.06] text-[#D4AF37] hover:text-[#F3C853] font-semibold transition-all duration-300"
         data-testid={cta.testid}
       >
         {cta.label}
@@ -144,7 +228,7 @@ function PillCTA({ cta, onClick }) {
       size="lg"
       variant="ghost"
       onClick={onClick}
-      className="rounded-full px-9 py-7 text-base border border-white/20 hover:border-white/55 bg-transparent hover:bg-white/[0.04] text-white"
+      className="rounded-full px-6 py-2.5 text-sm md:text-base h-auto border border-white/20 hover:border-white/50 bg-transparent hover:bg-white/[0.04] text-white font-semibold transition-all duration-300"
       data-testid={cta.testid}
     >
       {cta.label}

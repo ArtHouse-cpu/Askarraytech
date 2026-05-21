@@ -16,6 +16,7 @@ router.get('/portfolio', publicController.getPortfolio);
 
 // Payments
 router.post('/payments/checkout', paymentController.checkout);
+router.post('/payments/verify', paymentController.verify);
 router.get('/payments/status/:session_id', paymentController.paymentStatus);
 
 // Auth

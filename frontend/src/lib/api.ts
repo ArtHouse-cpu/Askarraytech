@@ -1,6 +1,18 @@
 import axios from "axios";
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const getBackendUrl = () => {
+  const envVal = process.env.REACT_APP_BACKEND_URL || "";
+  if (envVal.includes(",")) {
+    const urls = envVal.split(",");
+    const isLocal =
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1";
+    return isLocal ? urls[0] : (urls[1] || urls[0]);
+  }
+  return envVal;
+};
+
+const BACKEND_URL = getBackendUrl();
 export const API = `${BACKEND_URL}/api`;
 
 export const api = axios.create({

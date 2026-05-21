@@ -1,79 +1,169 @@
-const Stripe = require('stripe');
+const Razorpay = require('razorpay');
+const crypto = require('crypto');
 const { BookingModel, PaymentTransactionModel, SlotModel } = require('../models');
 const { nowIso, generateId } = require('../utils');
 
-const STRIPE_API_KEY = process.env.STRIPE_API_KEY || 'sk_test_dummy';
-const stripe = new Stripe(STRIPE_API_KEY, { apiVersion: '2024-12-18.acacia' });
+const RAZORPAY_KEY_ID = process.env.RAZORPAY_KEY_ID || 'rzp_test_dummy';
+const RAZORPAY_KEY_SECRET = process.env.RAZORPAY_KEY_SECRET || 'dummy_secret';
+
+const razorpay = new Razorpay({
+  key_id: RAZORPAY_KEY_ID,
+  key_secret: RAZORPAY_KEY_SECRET,
+});
 
 const BOOKING_AMOUNT = 399.0;
-const BOOKING_CURRENCY = 'inr';
+const BOOKING_CURRENCY = 'INR';
 
 const checkout = async (req, res) => {
-  const { booking_id, origin_url } = req.body;
+  const { booking_id } = req.body;
   const booking = await BookingModel.findOne({ id: booking_id });
   if (!booking) return res.status(404).json({ detail: 'Booking not found' });
   if (!booking.slot_id) return res.status(400).json({ detail: 'Please pick a slot before paying' });
   if (booking.status === 'paid') return res.status(400).json({ detail: 'Booking already paid' });
 
-  const origin = origin_url.replace(/\/$/, '');
-  const success_url = `${origin}/booking/success?session_id={CHECKOUT_SESSION_ID}&booking_id=${booking.id}`;
-  const cancel_url = `${origin}/booking/cancelled?booking_id=${booking.id}`;
+  try {
+    const amountInPaise = Math.round(BOOKING_AMOUNT * 100);
+    const order = await razorpay.orders.create({
+      amount: amountInPaise,
+      currency: 'INR',
+      receipt: booking.id,
+      notes: {
+        booking_id: booking.id,
+        email: booking.email,
+        service: booking.service_needed,
+      }
+    });
 
-  const session = await stripe.checkout.sessions.create({
-    payment_method_types: ['card'],
-    line_items: [{
-      price_data: {
-        currency: BOOKING_CURRENCY,
-        product_data: { name: `Consultation Booking: ${booking.service_needed}` },
-        unit_amount: Math.round(BOOKING_AMOUNT * 100),
-      },
-      quantity: 1,
-    }],
-    mode: 'payment',
-    success_url,
-    cancel_url,
-    metadata: {
+    await PaymentTransactionModel.create({
+      id: generateId(),
+      session_id: order.id,
       booking_id: booking.id,
       email: booking.email,
-      service: booking.service_needed,
-    }
-  });
+      amount: BOOKING_AMOUNT,
+      currency: BOOKING_CURRENCY,
+      status: 'initiated',
+      payment_status: 'pending',
+      metadata: { service: booking.service_needed },
+      created_at: nowIso(),
+      updated_at: nowIso(),
+    });
 
-  await PaymentTransactionModel.create({
-    id: generateId(),
-    session_id: session.id,
-    booking_id: booking.id,
-    email: booking.email,
-    amount: BOOKING_AMOUNT,
-    currency: BOOKING_CURRENCY,
-    status: 'initiated',
-    payment_status: 'pending',
-    metadata: { service: booking.service_needed },
-    created_at: nowIso(),
-    updated_at: nowIso(),
-  });
+    await BookingModel.updateOne({ id: booking.id }, {
+      $set: {
+        status: 'payment_initiated',
+        payment_session_id: order.id,
+      }
+    });
 
-  await BookingModel.updateOne({ id: booking.id }, {
-    $set: {
-      status: 'payment_initiated',
-      payment_session_id: session.id,
-    }
-  });
+    res.json({
+      order_id: order.id,
+      amount: amountInPaise,
+      currency: 'INR',
+      key_id: RAZORPAY_KEY_ID,
+      booking_id: booking.id,
+      name: booking.name,
+      email: booking.email,
+      phone: booking.phone || '',
+    });
+  } catch (err) {
+    console.error('Razorpay order creation failed:', err);
+    res.status(500).json({ detail: 'Could not initiate Razorpay order' });
+  }
+};
 
-  res.json({ url: session.url, session_id: session.id });
+const verify = async (req, res) => {
+  const { razorpay_payment_id, razorpay_order_id, razorpay_signature, booking_id } = req.body;
+
+  if (!razorpay_payment_id || !razorpay_order_id || !razorpay_signature || !booking_id) {
+    return res.status(400).json({ detail: 'Missing required signature verification fields' });
+  }
+
+  const txn = await PaymentTransactionModel.findOne({ session_id: razorpay_order_id });
+  if (!txn) {
+    return res.status(404).json({ detail: 'Payment transaction not found for this order' });
+  }
+
+  // Verify signature
+  const body = razorpay_order_id + "|" + razorpay_payment_id;
+  const expectedSignature = crypto
+    .createHmac('sha256', RAZORPAY_KEY_SECRET)
+    .update(body.toString())
+    .digest('hex');
+
+  if (expectedSignature === razorpay_signature) {
+    // 1. Update Payment Transaction
+    await PaymentTransactionModel.updateOne(
+      { session_id: razorpay_order_id },
+      {
+        $set: {
+          status: 'paid',
+          payment_status: 'paid',
+          completed_at: nowIso(),
+          updated_at: nowIso(),
+          metadata: {
+            ...txn.metadata,
+            razorpay_payment_id,
+            razorpay_signature,
+          }
+        }
+      }
+    );
+
+    // 2. Update Booking
+    await BookingModel.updateOne(
+      { id: booking_id },
+      {
+        $set: {
+          status: 'paid',
+          payment_session_id: razorpay_order_id,
+        }
+      }
+    );
+
+    return res.json({ success: true });
+  } else {
+    return res.status(400).json({ detail: 'Invalid signature. Payment verification failed.' });
+  }
 };
 
 const paymentStatus = async (req, res) => {
-  const txn = await PaymentTransactionModel.findOne({ session_id: req.params.session_id }, { _id: 0, __v: 0 });
+  const sessionId = req.params.session_id;
+  const txn = await PaymentTransactionModel.findOne({ session_id: sessionId }, { _id: 0, __v: 0 });
   if (!txn) return res.status(404).json({ detail: 'Payment not found' });
 
   if (txn.payment_status === 'paid') {
     return res.json({ status: txn.status, payment_status: 'paid', booking_id: txn.booking_id });
   }
 
+  if (sessionId.startsWith('order_')) {
+    try {
+      const order = await razorpay.orders.fetch(sessionId);
+      let payment_status = 'pending';
+      if (order.status === 'paid') {
+        payment_status = 'paid';
+        await PaymentTransactionModel.updateOne({ session_id: sessionId }, {
+          $set: {
+            status: 'paid',
+            payment_status: 'paid',
+            updated_at: nowIso(),
+          }
+        });
+        await BookingModel.updateOne({ id: txn.booking_id, status: { $ne: 'paid' } }, { $set: { status: 'paid' } });
+      }
+      return res.json({ status: order.status, payment_status, booking_id: txn.booking_id });
+    } catch (err) {
+      console.error('Razorpay order fetch failed:', err);
+      return res.status(502).json({ detail: 'Could not verify payment' });
+    }
+  }
+
+  // Fallback to Stripe (for compatibility)
+  const Stripe = require('stripe');
+  const STRIPE_API_KEY = process.env.STRIPE_API_KEY || 'sk_test_dummy';
+  const stripe = new Stripe(STRIPE_API_KEY, { apiVersion: '2024-12-18.acacia' });
   try {
-    const status = await stripe.checkout.sessions.retrieve(req.params.session_id);
-    await PaymentTransactionModel.updateOne({ session_id: req.params.session_id }, {
+    const status = await stripe.checkout.sessions.retrieve(sessionId);
+    await PaymentTransactionModel.updateOne({ session_id: sessionId }, {
       $set: {
         status: status.status,
         payment_status: status.payment_status,
@@ -98,46 +188,13 @@ const paymentStatus = async (req, res) => {
 };
 
 const stripeWebhook = async (req, res) => {
-  const sig = req.headers['stripe-signature'];
-  let event;
-  try {
-    event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET || '');
-  } catch (err) {
-    console.error('Stripe webhook failed:', err.message);
-    return res.status(400).send(`Webhook Error: ${err.message}`);
-  }
-
-  const session = event.data.object;
-  const sessionId = session.id;
-  const paymentStatus = session.payment_status;
-
-  if (!sessionId) return res.json({ ok: true });
-
-  const txn = await PaymentTransactionModel.findOne({ session_id: sessionId });
-  if (!txn) return res.json({ ok: true });
-
-  await PaymentTransactionModel.updateOne(
-    { session_id: sessionId },
-    {
-      $set: {
-        payment_status: paymentStatus || txn.payment_status,
-        updated_at: nowIso(),
-      }
-    }
-  );
-
-  if (paymentStatus === 'paid' && txn.payment_status !== 'paid') {
-    await BookingModel.updateOne(
-      { id: txn.booking_id, status: { $ne: 'paid' } },
-      { $set: { status: 'paid' } }
-    );
-  }
-
+  // Kept for backward compatibility
   res.json({ ok: true });
 };
 
 module.exports = {
   checkout,
+  verify,
   paymentStatus,
   stripeWebhook,
 };

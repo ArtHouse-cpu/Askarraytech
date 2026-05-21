@@ -55,6 +55,20 @@ const TIMELINE_OPTIONS = [
   "Just exploring",
 ];
 
+const loadRazorpayScript = () => {
+  return new Promise((resolve) => {
+    if (window.Razorpay) {
+      resolve(true);
+      return;
+    }
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+};
+
 const EMPTY = {
   name: "",
   email: "",
@@ -144,11 +158,66 @@ export default function BookingDialog({ open, onOpenChange, presetService }) {
   const startPayment = async () => {
     setRedirecting(true);
     try {
+      const isScriptLoaded = await loadRazorpayScript();
+      if (!isScriptLoaded) {
+        toast.error("Razorpay SDK failed to load. Please check your internet connection.");
+        setRedirecting(false);
+        return;
+      }
+
       const { data } = await api.post("/payments/checkout", {
         booking_id: bookingId,
-        origin_url: window.location.origin,
       });
-      window.location.href = data.url;
+
+      const options = {
+        key: data.key_id,
+        amount: data.amount,
+        currency: data.currency,
+        name: "Ask Array Tech",
+        description: "Strategy Call Booking Fee",
+        order_id: data.order_id,
+        prefill: {
+          name: data.name,
+          email: data.email,
+          contact: data.phone,
+        },
+        theme: {
+          color: "#D4AF37",
+        },
+        handler: async function (response) {
+          setRedirecting(true);
+          try {
+            const verifyRes = await api.post("/payments/verify", {
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_signature: response.razorpay_signature,
+              booking_id: data.booking_id,
+            });
+
+            if (verifyRes.data.success) {
+              toast.success("Payment verified successfully!");
+              window.location.href = `${window.location.origin}/booking/success?session_id=${data.order_id}&booking_id=${data.booking_id}`;
+            } else {
+              toast.error("Payment verification failed.");
+              setRedirecting(false);
+            }
+          } catch (err) {
+            toast.error(
+              getApiErrorMessage(err.response?.data?.detail) ||
+                "Error verifying payment."
+            );
+            setRedirecting(false);
+          }
+        },
+        modal: {
+          ondismiss: function () {
+            setRedirecting(false);
+          },
+        },
+      };
+
+      const razorpayInstance = new window.Razorpay(options);
+      razorpayInstance.open();
     } catch (err) {
       setRedirecting(false);
       toast.error(
@@ -505,7 +574,7 @@ function PayStep({ form, currentSlot, onBack, onPay, redirecting }) {
           Confirm with a commitment fee
         </DialogTitle>
         <DialogDescription className="text-white/60">
-          Secure payment via Stripe. 50% refundable if you don't continue.
+          Secure payment via Razorpay. 50% refundable if you don't continue.
         </DialogDescription>
       </DialogHeader>
 
@@ -540,7 +609,7 @@ function PayStep({ form, currentSlot, onBack, onPay, redirecting }) {
           {redirecting ? (
             <>
               <Loader2 size={16} className="mr-2 animate-spin" />
-              Redirecting to Stripe…
+              Opening Razorpay…
             </>
           ) : (
             <>
@@ -551,8 +620,7 @@ function PayStep({ form, currentSlot, onBack, onPay, redirecting }) {
         </Button>
       </div>
       <p className="text-[11px] text-white/40 text-center mt-3">
-        Powered by Stripe · Test mode. Your slot is held until checkout
-        completes.
+        Powered by Razorpay. Your slot is held until checkout completes.
       </p>
     </>
   );

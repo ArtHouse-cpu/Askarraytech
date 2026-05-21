@@ -7,9 +7,8 @@ import { BRAND } from "@/lib/brand";
 const NAV_LINKS = [
   { label: "Services", href: "#pricing" },
   { label: "Process", href: "#process" },
+  { label: "Pricing", href: "#pricing" },
   { label: "Why Us", href: "#why-us" },
-  // { label: "Portfolio", href: "#portfolio" },
-  { label: "FAQ", href: "#faq" },
   { label: "Contact", href: "#contact" },
 ];
 
@@ -40,25 +39,25 @@ export default function Navbar({ onBookSlot }) {
       <div className="max-w-7xl mx-auto px-6 h-[78px] flex items-center justify-between">
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="flex items-center gap-3 group"
+          className="flex items-center gap-2.5 group"
           data-testid="brand-logo"
         >
           <img
             src={BRAND.logoMark}
             alt="Ask Array Tech"
-            className="w-9 h-9 rounded-md object-cover"
+            className="w-8 h-8 rounded object-cover"
           />
-          <span className="font-display text-base md:text-lg tracking-[0.2em] uppercase text-white hidden sm:inline">
-            Ask Array <span className="text-gold">Tech</span>
+          <span className="font-serif-display text-lg md:text-xl text-white font-semibold tracking-tight hidden sm:inline-flex items-center gap-1.5">
+            Ask <span className="text-[#D4AF37]">Array</span> Tech
           </span>
         </button>
 
-        <nav className="hidden lg:flex items-center gap-7">
+        <nav className="hidden lg:flex items-center gap-8">
           {NAV_LINKS.map((l) => (
             <button
               key={l.label}
               onClick={() => handleNav(l.href)}
-              className="text-[13px] text-white/65 hover:text-white tracking-wide transition-colors"
+              className="text-[13px] text-white/70 hover:text-white tracking-wide transition-colors font-medium"
               data-testid={`nav-${l.label.toLowerCase().replace(/\s+/g, "-")}`}
             >
               {l.label}
@@ -69,10 +68,10 @@ export default function Navbar({ onBookSlot }) {
         <div className="flex items-center gap-3">
           <Button
             onClick={onBookSlot}
-            className="hidden sm:inline-flex bg-[#D4AF37] hover:bg-[#F3C853] text-black font-medium rounded-full px-5 py-2.5 gold-button-glow group"
+            className="hidden sm:inline-flex bg-[#D4AF37] hover:bg-[#F3C853] text-black font-medium rounded-full px-5 py-2.5 gold-button-glow group transition-all duration-300"
             data-testid="navbar-book-slot-btn"
           >
-            Book Strategy Call
+            Start Now
             <ArrowRight
               size={15}
               className="ml-1.5 transition-transform group-hover:translate-x-0.5"
@@ -96,7 +95,7 @@ export default function Navbar({ onBookSlot }) {
               <button
                 key={l.label}
                 onClick={() => handleNav(l.href)}
-                className="text-left text-white/80 py-2"
+                className="text-left text-white/80 py-2 font-medium"
                 data-testid={`nav-mobile-${l.label.toLowerCase()}`}
               >
                 {l.label}
@@ -110,7 +109,7 @@ export default function Navbar({ onBookSlot }) {
               className="bg-[#D4AF37] hover:bg-[#F3C853] text-black font-medium rounded-full mt-2"
               data-testid="navbar-mobile-book-slot-btn"
             >
-              Book Strategy Call
+              Start Now
             </Button>
           </div>
         </div>
