@@ -38,7 +38,7 @@ export default function Landing() {
       <HowItWorks onBookSlot={openBooking} />
       <WhyUs />
       <Portfolio />
-      <Testimonials />
+      {/* <Testimonials /> */}
       <FAQ />
       <Exclusivity />
       <FinalCTA onBookSlot={openBooking} />

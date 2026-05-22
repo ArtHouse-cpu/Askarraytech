@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Mail, MapPin, Send } from "lucide-react";
+import { Mail, MapPin, Send, FileText } from "lucide-react";
+import { Link } from "react-router-dom";
 import { api, getApiErrorMessage } from "@/lib/api";
 import { toast } from "sonner";
 
@@ -77,11 +78,28 @@ export default function Contact() {
                   Headquarters
                 </p>
                 <p className="font-display text-lg text-black">
-                  #20, Commercial Complex, Nehru Nagar (E) Bhilai, C.G, India
-                  490020
+                  #20, Commercial Complex, Nehru Nagar (E)
+                  <br />
+                  Bhilai, C.G, India 490020
                 </p>
               </div>
             </div>
+            {/* <div className="flex items-start gap-4">
+              <span className="inline-grid place-items-center w-10 h-10 rounded-xl bg-black text-white">
+                <FileText size={16} />
+              </span>
+              <div>
+                <p className="text-sm text-black/50 uppercase tracking-widest">
+                  Legal
+                </p>
+                <Link
+                  to="/terms-and-conditions"
+                  className="font-display text-lg text-black hover:text-[#B8860B] transition-colors"
+                >
+                  Terms
+                </Link>
+              </div>
+            </div> */}
           </div>
         </div>
 

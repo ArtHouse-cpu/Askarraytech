@@ -97,6 +97,22 @@ const FAQS = [
       </>
     ),
   },
+  {
+    q: "How long does company registration take?",
+    a: "Most standard registrations are completed within a few working days after successful document verification.",
+  },
+  {
+    q: "Can I build an MVP before raising funding?",
+    a: "Yes. Many startups first launch an MVP to validate demand, test user behavior and demonstrate traction before approaching investors.",
+  },
+  {
+    q: "Do I need Startup India registration?",
+    a: "Startup India registration can help eligible startups access government schemes, tax benefits, startup recognition and ecosystem credibility.",
+  },
+  {
+    q: "What is included in startup marketing setup?",
+    a: "Marketing setup may include branding, social media onboarding, ad account setup, pixel setup and launch infrastructure guidance.",
+  },
 ];
 
 export default function FAQ() {

@@ -1,9 +1,4 @@
-const { randomUUID } = require('crypto');
+import { randomUUID } from 'crypto';
 
-const nowIso = () => new Date().toISOString();
-const generateId = () => randomUUID();
-
-module.exports = {
-  nowIso,
-  generateId,
-};
+export const nowIso = () => new Date().toISOString();
+export const generateId = () => randomUUID();

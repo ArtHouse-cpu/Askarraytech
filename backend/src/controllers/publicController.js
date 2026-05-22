@@ -1,5 +1,5 @@
-const { BookingModel, ContactModel, SlotModel, PortfolioModel } = require('../models');
-const { nowIso, generateId } = require('../utils');
+import { BookingModel, ContactModel, SlotModel, PortfolioModel } from '../models/index.js';
+import { nowIso, generateId } from '../utils/index.js';
 
 const BOOKING_AMOUNT = 399.0;
 const BOOKING_CURRENCY = 'inr';
@@ -105,7 +105,7 @@ const getPortfolio = async (req, res) => {
   res.json(items);
 };
 
-module.exports = {
+export {
   getStatus,
   createBooking,
   createContact,

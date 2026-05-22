@@ -1,11 +1,11 @@
-const { BookingModel } = require('./Booking');
-const { ContactModel } = require('./Contact');
-const { SlotModel } = require('./Slot');
-const { PortfolioModel } = require('./Portfolio');
-const { UserModel } = require('./User');
-const { PaymentTransactionModel } = require('./PaymentTransaction');
+import { BookingModel } from './Booking.js';
+import { ContactModel } from './Contact.js';
+import { SlotModel } from './Slot.js';
+import { PortfolioModel } from './Portfolio.js';
+import { UserModel } from './User.js';
+import { PaymentTransactionModel } from './PaymentTransaction.js';
 
-module.exports = {
+export {
   BookingModel,
   ContactModel,
   SlotModel,

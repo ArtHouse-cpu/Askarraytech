@@ -1,7 +1,9 @@
-const Razorpay = require('razorpay');
-const crypto = require('crypto');
-const { BookingModel, PaymentTransactionModel, SlotModel } = require('../models');
-const { nowIso, generateId } = require('../utils');
+import Razorpay from 'razorpay';
+import crypto from 'crypto';
+import Stripe from 'stripe';
+import { BookingModel, PaymentTransactionModel, SlotModel } from '../models/index.js';
+import { nowIso, generateId } from '../utils/index.js';
+import { sendBookingConfirmationEmail } from '../utils/emailService.js';
 
 const RAZORPAY_KEY_ID = process.env.RAZORPAY_KEY_ID || 'rzp_test_dummy';
 const RAZORPAY_KEY_SECRET = process.env.RAZORPAY_KEY_SECRET || 'dummy_secret';
@@ -11,7 +13,7 @@ const razorpay = new Razorpay({
   key_secret: RAZORPAY_KEY_SECRET,
 });
 
-const BOOKING_AMOUNT = 399.0;
+const BOOKING_AMOUNT = 2.0;
 const BOOKING_CURRENCY = 'INR';
 
 const checkout = async (req, res) => {
@@ -109,16 +111,24 @@ const verify = async (req, res) => {
       }
     );
 
-    // 2. Update Booking
-    await BookingModel.updateOne(
-      { id: booking_id },
-      {
-        $set: {
-          status: 'paid',
-          payment_session_id: razorpay_order_id,
+    // 2. Update Booking with paid guard
+    const booking = await BookingModel.findOne({ id: booking_id });
+    if (booking && booking.status !== 'paid') {
+      await BookingModel.updateOne(
+        { id: booking_id },
+        {
+          $set: {
+            status: 'paid',
+            payment_session_id: razorpay_order_id,
+          }
         }
-      }
-    );
+      );
+
+      // Trigger Email Notification
+      sendBookingConfirmationEmail(booking_id).catch(err => {
+        console.error('Deferred booking confirmation email error:', err);
+      });
+    }
 
     return res.json({ success: true });
   } else {
@@ -148,7 +158,15 @@ const paymentStatus = async (req, res) => {
             updated_at: nowIso(),
           }
         });
-        await BookingModel.updateOne({ id: txn.booking_id, status: { $ne: 'paid' } }, { $set: { status: 'paid' } });
+        
+        const booking = await BookingModel.findOne({ id: txn.booking_id });
+        if (booking && booking.status !== 'paid') {
+          await BookingModel.updateOne({ id: txn.booking_id }, { $set: { status: 'paid' } });
+          
+          sendBookingConfirmationEmail(txn.booking_id).catch(err => {
+            console.error('Deferred booking confirmation email error:', err);
+          });
+        }
       }
       return res.json({ status: order.status, payment_status, booking_id: txn.booking_id });
     } catch (err) {
@@ -158,7 +176,6 @@ const paymentStatus = async (req, res) => {
   }
 
   // Fallback to Stripe (for compatibility)
-  const Stripe = require('stripe');
   const STRIPE_API_KEY = process.env.STRIPE_API_KEY || 'sk_test_dummy';
   const stripe = new Stripe(STRIPE_API_KEY, { apiVersion: '2024-12-18.acacia' });
   try {
@@ -172,7 +189,14 @@ const paymentStatus = async (req, res) => {
     });
 
     if (status.payment_status === 'paid' && txn.payment_status !== 'paid') {
-      await BookingModel.updateOne({ id: txn.booking_id, status: { $ne: 'paid' } }, { $set: { status: 'paid' } });
+      const booking = await BookingModel.findOne({ id: txn.booking_id });
+      if (booking && booking.status !== 'paid') {
+        await BookingModel.updateOne({ id: txn.booking_id }, { $set: { status: 'paid' } });
+        
+        sendBookingConfirmationEmail(txn.booking_id).catch(err => {
+          console.error('Deferred booking confirmation email error:', err);
+        });
+      }
     } else if (status.status === 'expired') {
       const booking = await BookingModel.findOne({ id: txn.booking_id });
       if (booking && booking.slot_id) {
@@ -192,7 +216,7 @@ const stripeWebhook = async (req, res) => {
   res.json({ ok: true });
 };
 
-module.exports = {
+export {
   checkout,
   verify,
   paymentStatus,

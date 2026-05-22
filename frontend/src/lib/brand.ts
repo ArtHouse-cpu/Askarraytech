@@ -5,7 +5,7 @@ export const BRAND = {
     "https://customer-assets.emergentagent.com/job_ask-array-launch/artifacts/vw0tiyuy_ChatGPT%20Image%20May%2014%2C%202026%2C%2005_20_28%20PM.png",
   // Full wordmark (ASK ARRAY TECH in gold on black)
   logoWordmark:
-    "https://customer-assets.emergentagent.com/job_ask-array-launch/artifacts/2sp5oxsi_Screenshot%202026-05-18%20at%2012.44.57%E2%80%AFPM.png",
+    "https://res.cloudinary.com/dzwto9zbu/image/upload/v1779439256/Logo_Askarray_k9cfci.jpg",
 };
 
 // Curated, idea-stage founder imagery (whiteboards, planning, sketching)

@@ -1,8 +1,16 @@
 // @ts-nocheck
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Check, Crown, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import DeliverablesDialog from "@/components/landing/DeliverablesDialog";
+
+const PLAN_ROUTES = {
+  "company-setup": "/company-setup",
+  "product-mvp": "/mvp-development",
+  "marketing-setup": "/marketing-setup",
+  "idea-to-revenue": "/idea-to-revenue",
+};
 
 const PLANS = [
   {
@@ -21,10 +29,7 @@ const PLANS = [
       "End-to-end coordination",
     ],
     footnote: "Includes up to 2 directors / partners.",
-    extras: [
-      "Additional director: ₹5,000 each",
-      "Payment gateway add-on: ₹2,000",
-    ],
+    extras: ["Additional director: ₹5,000 each"],
     accent: false,
   },
   {
@@ -74,6 +79,8 @@ const PLANS = [
       "Priority support & faster execution",
       "Launch assistance",
     ],
+    disclaimer:
+      "Final pricing and project timeline may vary depending on project scope and complexity. Final quotation is shared after the initial consultation call.",
     accent: true,
   },
 ];
@@ -89,7 +96,10 @@ export default function Pricing({ onBookSlot }) {
     >
       <div className="max-w-7xl mx-auto px-6">
         <div className="max-w-4xl">
-          <div className="inline-flex items-center gap-3" data-testid="pricing-eyebrow">
+          <div
+            className="inline-flex items-center gap-3"
+            data-testid="pricing-eyebrow"
+          >
             <span className="h-px w-8 bg-[#D4AF37]" />
             <p className="text-xs uppercase tracking-[0.28em] text-[#8a6d1f] font-medium">
               What we do
@@ -111,8 +121,8 @@ export default function Pricing({ onBookSlot }) {
             </span>
           </h2>
           <p className="mt-7 text-base md:text-lg text-black/55 max-w-2xl leading-relaxed">
-            Whether you're registering your company or shipping your MVP, we
-            own the entire journey — from paperwork to production.
+            Whether you're registering your company or shipping your MVP, we own
+            the entire journey — from paperwork to production.
           </p>
         </div>
 
@@ -207,13 +217,28 @@ function PricingCard({ plan, onBookSlot, onShowDeliverables }) {
 
       {plan.disclaimer && (
         <div
-          className="mt-4 rounded-lg border border-[#D4AF37]/30 bg-[#D4AF37]/[0.07] px-3 py-2.5"
+          className={[
+            "mt-4 rounded-lg px-3 py-2.5 border",
+            isAccent
+              ? "border-[#D4AF37]/30 bg-[#D4AF37]/10"
+              : "border-black/10 bg-black/[0.03]",
+          ].join(" ")}
           data-testid={`pricing-disclaimer-${plan.key}`}
         >
-          <p className="text-[11px] leading-relaxed italic text-black/65">
-            <span className="text-[#8a6d1f] font-medium not-italic">
-              Note:{" "}
-            </span>
+          <p
+            className={[
+              "text-[11px] leading-relaxed italic",
+              isAccent ? "text-white/75" : "text-black/65",
+            ].join(" ")}
+          >
+            <span
+              className={[
+                "font-medium not-italic",
+                isAccent ? "text-[#D4AF37]" : "text-[#8a6d1f]",
+              ].join(" ")}
+            >
+              Note:
+            </span>{" "}
             {plan.disclaimer}
           </p>
         </div>
@@ -231,8 +256,8 @@ function PricingCard({ plan, onBookSlot, onShowDeliverables }) {
         >
           Book Strategy Call
         </Button>
-        <button
-          onClick={onShowDeliverables}
+        <Link
+          to={PLAN_ROUTES[plan.key]}
           className={[
             "inline-flex items-center justify-center gap-1.5 text-sm group",
             isAccent
@@ -246,7 +271,7 @@ function PricingCard({ plan, onBookSlot, onShowDeliverables }) {
             size={14}
             className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
           />
-        </button>
+        </Link>
       </div>
     </div>
   );

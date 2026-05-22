@@ -1,6 +1,6 @@
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const { UserModel } = require('../models');
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import { UserModel } from '../models/index.js';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'secret';
 const ACCESS_TOKEN_EXPIRE_MIN = 60 * 12;
@@ -58,7 +58,7 @@ const getMe = (req, res) => {
   res.json({ id: user.id, email: user.email, name: user.name, role: user.role });
 };
 
-module.exports = {
+export {
   verifyPassword,
   createAccessToken,
   getAdmin,

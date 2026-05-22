@@ -1,12 +1,15 @@
-require('dotenv').config();
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const bcrypt = require('bcrypt');
-const { UserModel, PortfolioModel } = require('./models');
-const { nowIso, generateId } = require('./utils');
-const routes = require('./routes');
-const { stripeWebhook } = require('./controllers/paymentController');
+import 'dotenv/config';
+import express from 'express';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import bcrypt from 'bcrypt';
+import { UserModel, PortfolioModel } from './models/index.js';
+import { nowIso, generateId } from './utils/index.js';
+import publicRouter from './routes/PublicRouter.js';
+import paymentRouter from './routes/PaymentRouter.js';
+import authRouter from './routes/AuthRouter.js';
+import adminRouter from './routes/AdminRouter.js';
+import { stripeWebhook } from './controllers/paymentController.js';
 
 const app = express();
 
@@ -21,7 +24,10 @@ app.post('/api/webhook/stripe', express.raw({ type: 'application/json' }), strip
 app.use(express.json());
 
 // Main Routes
-app.use('/api', routes);
+app.use('/api', publicRouter);
+app.use('/api', paymentRouter);
+app.use('/api', authRouter);
+app.use('/api', adminRouter);
 
 // Database Seeding Logic
 const DEFAULT_PORTFOLIO = [

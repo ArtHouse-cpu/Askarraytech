@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const SlotSchema = new Schema({
@@ -9,6 +9,4 @@ const SlotSchema = new Schema({
   booking_id: String,
 });
 
-const SlotModel = mongoose.model('Slot', SlotSchema);
-
-module.exports = { SlotModel };
+export const SlotModel = mongoose.model('Slot', SlotSchema);

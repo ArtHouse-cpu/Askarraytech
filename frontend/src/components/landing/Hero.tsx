@@ -40,10 +40,8 @@ export default function Hero({ onBookSlot }) {
 
       <div className="relative max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-          
           {/* Left Column - Headline & Content */}
           <div className="lg:col-span-7 flex flex-col justify-center">
-            
             {/* Eyebrow */}
             <div
               className="inline-flex items-center gap-2 rounded-full border border-[#D4AF37]/35 bg-[#D4AF37]/[0.06] backdrop-blur-md px-4 py-2 self-start animate-fade-up"
@@ -55,25 +53,38 @@ export default function Hero({ onBookSlot }) {
               </span>
             </div>
 
-            {/* Headline */}
-            <h1
-              className="font-serif-display mt-8 text-white animate-fade-up leading-[1.1] md:leading-[1.08] tracking-tight font-medium"
-              style={{
-                fontSize: "clamp(2.75rem, 5.5vw, 4.75rem)",
-                animationDelay: "0.05s",
-              }}
-            >
-              <span className="block">Start Your Startup.</span>
-              <span className="block">Build Your Product.</span>
-              <span className="block text-[#D4AF37] italic font-serif-display">Grow Faster.</span>
-            </h1>
+            {/* Headline with backend shading */}
+            <div className="relative mt-8">
+              {/* Premium gold/yellow backend shading */}
+              <div className="absolute -left-16 -top-16 w-[450px] h-[350px] rounded-full bg-[#D4AF37]/10 blur-[130px] pointer-events-none" />
+              <div className="absolute -left-8 -top-8 w-[250px] h-[250px] rounded-full bg-[#F3C853]/6 blur-[90px] pointer-events-none" />
+
+              <h1
+                className="relative font-display text-white animate-fade-up leading-[1.02] tracking-tighter font-black"
+                style={{
+                  fontSize: "clamp(2.75rem, 5.5vw, 4.75rem)",
+                  animationDelay: "0.05s",
+                }}
+              >
+                <span className="inline">Start Your </span>
+                <span className="inline gold-gradient-text">Startup.</span>
+                <span className="mt-2 md:mt-3 inline-block">Build Your </span>
+                <span className="gold-gradient-text inline"> Product.</span>
+                <span className="block text-gold  font-bold mt-4 md:mt-5">
+                  Grow Faster.
+                </span>
+              </h1>
+            </div>
 
             {/* Paragraph description */}
             <p
               className="mt-6 text-base md:text-lg text-white/60 max-w-xl leading-relaxed animate-fade-up"
               style={{ animationDelay: "0.15s" }}
             >
-              From legal setup to MVP development and marketing infrastructure — everything founders need to launch, under one roof.
+              <strong>Turn Your Idea Into Revenue in 30 Days.</strong> Ask Array
+              Tech helps founders launch startups faster with company setup, MVP
+              development, and marketing setup — all under one execution
+              partner.
             </p>
 
             {/* 3 service pill CTAs */}
@@ -106,13 +117,11 @@ export default function Hero({ onBookSlot }) {
                 <span className="text-[#D4AF37] font-bold">✓</span> GROWTH
               </div>
             </div>
-
           </div>
 
           {/* Right Column - Concentric circles & Floating Badges */}
           <div className="lg:col-span-5 flex items-center justify-center w-full mt-8 lg:mt-0">
             <div className="relative w-full max-w-[460px] aspect-[1.05] rounded-[32px] border border-white/5 bg-[#060606]/90 overflow-hidden flex items-center justify-center p-8 shadow-3xl">
-              
               {/* Radial gradient background glow */}
               <div className="absolute w-[220px] h-[220px] rounded-full bg-[#D4AF37]/[0.08] blur-3xl pointer-events-none" />
 
@@ -139,7 +148,7 @@ export default function Hero({ onBookSlot }) {
               </div>
 
               {/* Floating Badges */}
-              
+
               {/* 1. Pvt Ltd - Filed */}
               <div
                 className="absolute top-[12%] left-[8%] z-20 flex items-center gap-2 bg-black/85 border border-white/10 px-3.5 py-1.5 rounded-full shadow-lg hover:border-[#D4AF37]/35 transition-colors cursor-default"
@@ -181,10 +190,8 @@ export default function Hero({ onBookSlot }) {
                   MVP - v1.2 shipped
                 </span>
               </div>
-
             </div>
           </div>
-
         </div>
       </div>
     </section>

@@ -7,6 +7,11 @@ import AdminDashboard from "@/pages/AdminDashboard";
 import BookingSuccess from "@/pages/BookingSuccess";
 import BookingCancelled from "@/pages/BookingCancelled";
 import NotFound from "@/pages/NotFound";
+import TermsAndConditions from "@/pages/TermsAndConditions";
+import CompanySetupPage from "@/pages/CompanySetupPage";
+import MVPDevelopmentPage from "@/pages/MVPDevelopmentPage";
+import MarketingSetupPage from "@/pages/MarketingSetupPage";
+import IdeaToRevenuePage from "@/pages/IdeaToRevenuePage";
 
 function App() {
   return (
@@ -14,6 +19,11 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Landing />} />
+          <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+          <Route path="/company-setup" element={<CompanySetupPage />} />
+          <Route path="/mvp-development" element={<MVPDevelopmentPage />} />
+          <Route path="/marketing-setup" element={<MarketingSetupPage />} />
+          <Route path="/idea-to-revenue" element={<IdeaToRevenuePage />} />
           <Route path="/booking/success" element={<BookingSuccess />} />
           <Route path="/booking/cancelled" element={<BookingCancelled />} />
           <Route path="/admin/login" element={<AdminLogin />} />

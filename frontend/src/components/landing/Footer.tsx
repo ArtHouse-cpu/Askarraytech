@@ -1,9 +1,10 @@
 // @ts-nocheck
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { BRAND } from "@/lib/brand";
 import { Mail, Globe, ShieldCheck } from "lucide-react";
 
 export default function Footer() {
+  const navigate= useNavigate();
   return (
     <footer
       className="relative bg-[#0a0a0a] text-white border-t border-white/5"
@@ -12,11 +13,11 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6 py-16 grid md:grid-cols-3 gap-12">
         <div>
           <div className="flex items-center gap-3">
-            <img
+            {/* <img
               src={BRAND.logoMark}
               alt="Ask Array Tech"
               className="w-10 h-10 rounded-md"
-            />
+            /> */}
             <span className="font-display text-base tracking-[0.18em] uppercase">
               Ask Array <span className="text-gold">Tech</span>
             </span>
@@ -45,11 +46,11 @@ export default function Footer() {
                 Process
               </a>
             </li>
-            <li>
-              {/* <a href="#portfolio" className="hover:text-white">
+            {/* <li>
+              <a href="#portfolio" className="hover:text-white">
                 Portfolio
-              </a> */}
-            </li>
+              </a>
+            </li> */}
             <li>
               <a href="#faq" className="hover:text-white">
                 FAQ
@@ -58,6 +59,11 @@ export default function Footer() {
             <li>
               <a href="#contact" className="hover:text-white">
                 Contact
+              </a>
+            </li>
+            <li>
+              <a href="terms-and-conditions" className="hover:text-white">
+                Terms
               </a>
             </li>
           </ul>
@@ -80,7 +86,7 @@ export default function Footer() {
       </a>
     </li>
 
-    <li>
+    {/* <li>
       <a
         href="https://www.askarray.in"
         target="_blank"
@@ -91,7 +97,7 @@ export default function Footer() {
         <Globe size={16} />
         askarray.in
       </a>
-    </li>
+    </li> */}
 
     <li>
       <Link

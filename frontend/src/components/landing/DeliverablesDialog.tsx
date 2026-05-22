@@ -138,7 +138,7 @@ const DELIVERABLES = {
           {
             kind: "brand",
             image:
-              "https://images.unsplash.com/photo-1561070791-2526d30994b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80",
+              "https://res.cloudinary.com/dzwto9zbu/image/upload/v1779396451/ChatGPT_Image_May_22_2026_02_17_10_AM_oj6g36.png",
             title: "Brand kit · palette + type",
           },
         ],

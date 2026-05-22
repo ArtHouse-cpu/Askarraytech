@@ -8,6 +8,7 @@ const NAV_LINKS = [
   { label: "Services", href: "#pricing" },
   { label: "Process", href: "#process" },
   { label: "Pricing", href: "#pricing" },
+  // { label: "Portfolio", href: "#portfolio" },
   { label: "Why Us", href: "#why-us" },
   { label: "Contact", href: "#contact" },
 ];
@@ -42,11 +43,11 @@ export default function Navbar({ onBookSlot }) {
           className="flex items-center gap-2.5 group"
           data-testid="brand-logo"
         >
-          <img
+          {/* <img
             src={BRAND.logoMark}
             alt="Ask Array Tech"
             className="w-8 h-8 rounded object-cover"
-          />
+          /> */}
           <span className="font-serif-display text-lg md:text-xl text-white font-semibold tracking-tight hidden sm:inline-flex items-center gap-1.5">
             Ask <span className="text-[#D4AF37]">Array</span> Tech
           </span>

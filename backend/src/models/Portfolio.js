@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const PortfolioSchema = new Schema({
@@ -13,6 +13,4 @@ const PortfolioSchema = new Schema({
   order: Number,
 });
 
-const PortfolioModel = mongoose.model('Portfolio', PortfolioSchema);
-
-module.exports = { PortfolioModel };
+export const PortfolioModel = mongoose.model('Portfolio', PortfolioSchema);

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const PaymentTransactionSchema = new Schema({
@@ -18,6 +18,4 @@ const PaymentTransactionSchema = new Schema({
   completed_at: String,
 });
 
-const PaymentTransactionModel = mongoose.model('PaymentTransaction', PaymentTransactionSchema);
-
-module.exports = { PaymentTransactionModel };
+export const PaymentTransactionModel = mongoose.model('PaymentTransaction', PaymentTransactionSchema);

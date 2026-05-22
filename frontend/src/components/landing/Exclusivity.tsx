@@ -42,11 +42,10 @@ export default function Exclusivity() {
             By invitation, almost
           </p>
           <h2 className="font-display font-medium text-4xl md:text-5xl lg:text-6xl tracking-[-0.025em] mt-4 leading-[1.02]">
-            Built for serious founders{" "}
-            <span className="text-black/40 italic">only.</span>
+            Built for serious founders
           </h2>
           <p className="mt-6 text-base md:text-lg text-black/55 max-w-2xl leading-relaxed">
-            We don't work with everyone — and we think that's the point.
+            We intentionally cap intake to 1–5 startups monthly to protect execution quality and focus on founders ready to launch.
           </p>
         </div>
 
