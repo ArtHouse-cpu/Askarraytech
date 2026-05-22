@@ -138,6 +138,7 @@ const startServer = async () => {
     
     await seedAdmin();
     await seedPortfolio();
+    //Home route for testing
     app.get("/", (req, res) => {
       res.send("🚀 Server is live and running...");
     });
