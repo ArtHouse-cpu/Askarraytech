@@ -95,7 +95,7 @@ export default function Footer() {
 
         <div>
           <p className="text-xs uppercase tracking-[0.22em] text-white/40 font-semibold">
-            Headquarters
+            Headquarter
           </p>
           <div className="mt-4 text-sm text-white/70 leading-relaxed space-y-1">
             <p className="text-white font-medium">Ask Array Tech</p>
