@@ -13,7 +13,7 @@ const razorpay = new Razorpay({
   key_secret: RAZORPAY_KEY_SECRET,
 });
 
-const BOOKING_AMOUNT = 2.0;
+const BOOKING_AMOUNT = 399.0;
 const BOOKING_CURRENCY = 'INR';
 
 const checkout = async (req, res) => {
@@ -142,6 +142,13 @@ const paymentStatus = async (req, res) => {
   if (!txn) return res.status(404).json({ detail: 'Payment not found' });
 
   if (txn.payment_status === 'paid') {
+    const booking = await BookingModel.findOne({ id: txn.booking_id });
+    if (booking && booking.status !== 'paid') {
+      await BookingModel.updateOne({ id: txn.booking_id }, { $set: { status: 'paid' } });
+      sendBookingConfirmationEmail(txn.booking_id).catch(err => {
+        console.error('Deferred booking confirmation email error:', err);
+      });
+    }
     return res.json({ status: txn.status, payment_status: 'paid', booking_id: txn.booking_id });
   }
 

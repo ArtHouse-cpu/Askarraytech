@@ -18,9 +18,9 @@ export default function Footer() {
               alt="Ask Array Tech"
               className="w-10 h-10 rounded-md"
             />
-            <span className="font-display text-base tracking-[0.18em] uppercase">
-              Ask Array <span className="text-gold">Tech</span>
-            </span>
+           <span className="font-display text-lg md:text-xl text-white font-bold tracking-tight hidden sm:inline-flex items-center gap-1.5">
+            Ask Array <span className="text-gold">Tech</span>
+          </span>
           </div>
           <p className="mt-5 text-sm text-white/55 max-w-xs leading-relaxed">
             A concierge launch partner for serious founders. Legal, product,

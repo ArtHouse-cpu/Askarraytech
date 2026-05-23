@@ -26,6 +26,11 @@ transporter.verify((error, success) => {
  * @param {string} isoString 
  * @returns {object} { date: string, time: string }
  */
+/**
+ * Format ISO slot start string to a reader-friendly Indian Standard Time (IST) string.
+ * @param {string} isoString 
+ * @returns {object} { date: string, time: string }
+ */
 function formatSlotTime(isoString) {
   if (!isoString) {
     return { date: 'To be scheduled', time: 'To be scheduled' };
@@ -53,6 +58,22 @@ function formatSlotTime(isoString) {
 }
 
 /**
+ * Format ISO string to Google Calendar and ICS date format: YYYYMMDDTHHmmssZ
+ * @param {string} isoString 
+ * @returns {string}
+ */
+function formatToGoogleCalDate(isoString) {
+  if (!isoString) return '';
+  try {
+    const d = new Date(isoString);
+    return d.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+  } catch (err) {
+    console.error('Error formatting google cal date:', err);
+    return '';
+  }
+}
+
+/**
  * Sends a booking confirmation email to the user.
  * @param {string} bookingId 
  */
@@ -64,7 +85,7 @@ export async function sendBookingConfirmationEmail(bookingId) {
       return;
     }
 
-    const { name, email, service_needed, slot_start, amount } = booking;
+    const { name, email, service_needed, slot_start, slot_end, amount } = booking;
     if (!email) {
       console.error(`No email address available for booking: ${bookingId}`);
       return;
@@ -72,6 +93,38 @@ export async function sendBookingConfirmationEmail(bookingId) {
 
     const { date: slotDate, time: slotTime } = formatSlotTime(slot_start);
     const sender = process.env.SENDER_EMAIL || 'justinanurag0.2@gmail.com';
+
+    // Set end time (default to 45 mins if not stored)
+    const defaultEndTime = new Date(new Date(slot_start).getTime() + 45 * 60 * 1000).toISOString();
+    const end = slot_end || defaultEndTime;
+
+    const startGoogleDate = formatToGoogleCalDate(slot_start);
+    const endGoogleDate = formatToGoogleCalDate(end);
+
+    // Google Calendar template URL
+    const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Startup Strategy Call | Ask Array Tech')}&dates=${startGoogleDate}/${endGoogleDate}&details=${encodeURIComponent(`Hi ${name},\n\nYour startup strategy call is confirmed with Ask Array Tech.\n\nService Needed: ${service_needed || 'Startup Consultation'}\nBooking Reference: ${bookingId}\nSupport: founders@askarray.in\n\nWe look forward to speaking with you!`)}&location=${encodeURIComponent('Google Meet / Online')}`;
+
+    // ICS calendar event content
+    const icsContent = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Ask Array Tech//NONSGML Consultation Booking//EN',
+      'CALSCALE:GREGORIAN',
+      'METHOD:REQUEST',
+      'BEGIN:VEVENT',
+      `UID:${bookingId}`,
+      `DTSTAMP:${formatToGoogleCalDate(new Date().toISOString())}`,
+      `DTSTART:${startGoogleDate}`,
+      `DTEND:${endGoogleDate}`,
+      'SUMMARY:Startup Strategy Call | Ask Array Tech',
+      `DESCRIPTION:Hi ${name},\\n\\nYour startup strategy call is confirmed with Ask Array Tech.\\n\\nService: ${service_needed || 'Startup Consultation'}\\nBooking Reference: ${bookingId}\\nSupport: founders@askarray.in`,
+      'LOCATION:Google Meet / Online',
+      'STATUS:CONFIRMED',
+      `ATTENDEE;ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;RSVP=TRUE;CN="${name}":MAILTO:${email}`,
+      'ORGANIZER;CN="Ask Array Tech":MAILTO:founders@askarray.in',
+      'END:VEVENT',
+      'END:VCALENDAR'
+    ].join('\r\n');
 
     const htmlContent = `
       <!DOCTYPE html>
@@ -141,7 +194,7 @@ export async function sendBookingConfirmationEmail(bookingId) {
             border-radius: 8px;
             border: 1px solid #eaeaea;
             padding: 24px;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
           }
           .details-title {
             font-size: 13px;
@@ -260,12 +313,18 @@ export async function sendBookingConfirmationEmail(bookingId) {
               </div>
             </div>
 
+            <div style="text-align: center; margin: 30px 0 35px 0;">
+              <a href="${calendarUrl}" target="_blank" style="background-color: #D4AF37; color: #000000; text-decoration: none; padding: 14px 32px; border-radius: 9999px; font-weight: 600; font-size: 15px; display: inline-block; box-shadow: 0 8px 24px -6px rgba(212,175,55,0.4);">
+                Add to Google Calendar
+              </a>
+            </div>
+
             <div class="next-steps">
               <h3>Next Steps</h3>
               <div class="step-item">
                 <div class="step-number">1</div>
                 <div class="step-content">
-                  <strong>Calendar invitation:</strong> A calendar invitation with a Google Meet link will be sent to this email address shortly.
+                  <strong>Add to Calendar:</strong> We have attached a calendar invite (\`invite.ics\`) to this email. Open the attachment to add the event directly, or click the "Add to Google Calendar" button above.
                 </div>
               </div>
               <div class="step-item">
@@ -296,6 +355,13 @@ export async function sendBookingConfirmationEmail(bookingId) {
       to: email,
       subject: `Booking Confirmed: Startup Consultation with Ask Array Tech`,
       html: htmlContent,
+      attachments: [
+        {
+          filename: 'invite.ics',
+          content: icsContent,
+          contentType: 'text/calendar; charset=utf-8; method=REQUEST',
+        }
+      ]
     });
 
     console.log(`Booking confirmation email sent to ${email} for booking: ${bookingId}`);
