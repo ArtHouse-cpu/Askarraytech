@@ -6,6 +6,7 @@ export const BRAND = {
   // Full wordmark (ASK ARRAY TECH in gold on black)
   logoWordmark:
     "https://res.cloudinary.com/dzwto9zbu/image/upload/v1779439256/Logo_Askarray_k9cfci.jpg",
+    newLogo:"https://res.cloudinary.com/dzwto9zbu/image/upload/v1779560324/New_logo_ask_array_fdxl6b.jpg",
 };
 
 // Curated, idea-stage founder imagery (whiteboards, planning, sketching)

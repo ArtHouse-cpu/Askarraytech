@@ -6,12 +6,9 @@ import {
   ShieldCheck, 
   ArrowLeft, 
   ArrowRight,
-  CheckCircle,
-  FileText,
   Sparkles
 } from "lucide-react";
 import { useMeta } from "@/hooks/useMeta";
-import Navbar from "@/components/landing/Navbar";
 import Contact from "@/components/landing/Contact";
 import Footer from "@/components/landing/Footer";
 import BookingDialog from "@/components/landing/BookingDialog";
@@ -71,23 +68,29 @@ export default function CompanySetupPage() {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
-      <Navbar onBookSlot={() => openBooking()} />
-
-      <main className="relative pt-32 pb-20 md:pt-40 overflow-hidden">
+      <main className="relative pt-12 pb-20 md:pt-16 overflow-hidden">
         {/* Background Gradients */}
         <div className="absolute inset-0 bg-grid-soft pointer-events-none" />
         <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] rounded-full bg-[#D4AF37]/5 blur-[120px] pointer-events-none" />
         <div className="absolute inset-0 grain pointer-events-none opacity-40" />
 
         <div className="max-w-7xl mx-auto px-6 relative">
-          {/* Back button */}
-          <Link 
-            to="/" 
-            className="inline-flex items-center gap-2 text-xs text-white/50 hover:text-white uppercase tracking-wider transition-colors mb-8 group"
-          >
-            <ArrowLeft size={14} className="transition-transform group-hover:-translate-x-0.5" />
-            Back to Home
-          </Link>
+          {/* Header Row */}
+          <div className="flex items-center justify-between border-b border-white/5 pb-6 mb-12">
+            <Link 
+              to="/" 
+              className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 px-4 py-2 text-xs text-white/70 hover:text-white transition-all group"
+            >
+              <ArrowLeft size={14} className="transition-transform group-hover:-translate-x-0.5" />
+              Back to Home
+            </Link>
+            <div className="flex items-center gap-2.5">
+              <span className="inline-block w-6 h-6 rounded bg-gradient-to-br from-[#F3C853] via-[#D4AF37] to-[#8a6d1f] grid place-items-center shadow-[0_0_10px_rgba(212,175,55,0.2)]">
+                <span className="text-black font-display font-bold text-xs">A</span>
+              </span>
+              <span className="text-xs text-white/40 font-medium tracking-wider uppercase">Ask Array Tech</span>
+            </div>
+          </div>
 
           {/* Header */}
           <div className="max-w-3xl">
@@ -98,7 +101,7 @@ export default function CompanySetupPage() {
               </span>
             </div>
 
-            <h1 className="font-serif-display mt-6 text-4xl md:text-6xl text-white font-medium leading-[1.1] tracking-tight">
+            <h1 className="font-display mt-6 text-4xl md:text-6xl text-white font-bold leading-[1.1] tracking-tight">
               Company Setup Services for Startups
             </h1>
 

@@ -235,7 +235,7 @@ function PillCTA({ cta, onClick }) {
       size="lg"
       variant="ghost"
       onClick={onClick}
-      className="rounded-full px-6 py-2.5 text-sm md:text-base h-auto border border-white/20 hover:border-white/50 bg-transparent hover:bg-white/[0.04] text-white font-semibold transition-all duration-300"
+      className="rounded-full px-6 py-2.5 text-sm md:text-base h-auto border border-white/20 hover:border-white/50 bg-transparent hover:bg-white/[0.04] text-white hover:text-white font-semibold transition-all duration-300"
       data-testid={cta.testid}
     >
       {cta.label}

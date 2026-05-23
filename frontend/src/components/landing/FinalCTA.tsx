@@ -56,15 +56,13 @@ export default function FinalCTA({ onBookSlot }) {
             className="bg-[#D4AF37] hover:bg-[#F3C853] text-black font-semibold rounded-full px-10 py-7 text-base gold-button-glow group"
             data-testid="final-cta-book-btn"
           >
-            Book Your Slot · ₹399
+            Book Your Slot
             <ArrowRight
               size={18}
               className="ml-2 transition-transform group-hover:translate-x-1"
             />
           </Button>
-          <p className="text-sm text-white/55" data-testid="final-cta-refund">
-            50% refundable if you don't continue.
-          </p>
+         
         </div>
 
         <p className="mt-10 text-xs text-white/35 tracking-widest uppercase">

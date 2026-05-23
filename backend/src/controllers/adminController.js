@@ -44,7 +44,13 @@ const getContacts = async (req, res) => {
 
 const getStats = async (req, res) => {
   const bookings_total = await BookingModel.countDocuments();
-  const paid_total = await BookingModel.countDocuments({ status: 'paid' });
+  const paid_total = await BookingModel.countDocuments({ status: { $in: ['paid', 'completed'] } });
+  const unpaid_total = await BookingModel.countDocuments({ status: { $nin: ['paid', 'completed'] } });
+  
+  // Calculate unique customers based on email
+  const unique_emails = await BookingModel.distinct('email');
+  const customers_total = unique_emails.length;
+
   const contacts_total = await ContactModel.countDocuments();
   const slots_total = await SlotModel.countDocuments();
   const slots_available = await SlotModel.countDocuments({ is_booked: false, start_at: { $gt: nowIso() } });
@@ -52,6 +58,8 @@ const getStats = async (req, res) => {
   res.json({
     bookings_total,
     bookings_paid: paid_total,
+    bookings_unpaid: unpaid_total,
+    customers_total,
     contacts_total,
     slots_total,
     slots_available,

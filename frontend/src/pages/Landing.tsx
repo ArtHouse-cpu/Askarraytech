@@ -11,7 +11,7 @@ import Testimonials from "@/components/landing/Testimonials";
 import FAQ from "@/components/landing/FAQ";
 import Exclusivity from "@/components/landing/Exclusivity";
 import FinalCTA from "@/components/landing/FinalCTA";
-import Contact from "@/components/landing/Contact";
+// import Contact from "@/components/landing/Contact";
 import Footer from "@/components/landing/Footer";
 import { useState } from "react";
 import BookingDialog from "@/components/landing/BookingDialog";
@@ -42,7 +42,7 @@ export default function Landing() {
       <FAQ />
       <Exclusivity />
       <FinalCTA onBookSlot={openBooking} />
-      <Contact />
+      {/* <Contact /> */}
       <Footer />
       <BookingDialog
         open={bookingOpen}

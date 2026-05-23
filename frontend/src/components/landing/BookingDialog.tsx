@@ -39,12 +39,12 @@ const SERVICE_OPTIONS = [
 ];
 
 const BUDGET_OPTIONS = [
-  "80K - 1L",
-  "1L - 2L",
-  "2L - 5L",
-  "5L - 10L",
-  "10L - 20L",
-  "20L+",
+  "₹80K - ₹1L",
+  "₹1L - ₹2L",
+  "₹2L - ₹5L",
+  "₹5L - ₹10L",
+  "₹10L - ₹20L",
+  "₹20L+",
   "Need guidance",
 ];
 
@@ -575,7 +575,7 @@ function PayStep({ form, currentSlot, onBack, onPay, redirecting }) {
           Confirm with a commitment fee
         </DialogTitle>
         <DialogDescription className="text-white/60">
-          Secure payment via Razorpay. 50% refundable if you don't continue.
+          Secure payment via Razorpay. 
         </DialogDescription>
       </DialogHeader>
 
