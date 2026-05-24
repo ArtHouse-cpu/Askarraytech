@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { 
   Award, 
@@ -6,9 +6,11 @@ import {
   ShieldCheck, 
   ArrowLeft, 
   ArrowRight,
-  Sparkles
+  Sparkles,
+  Calendar
 } from "lucide-react";
 import { useMeta } from "@/hooks/useMeta";
+import { BRAND } from "@/lib/brand";
 import Contact from "@/components/landing/Contact";
 import Footer from "@/components/landing/Footer";
 import BookingDialog from "@/components/landing/BookingDialog";
@@ -22,6 +24,20 @@ export default function CompanySetupPage() {
 
   const [bookingOpen, setBookingOpen] = useState(false);
   const [presetService, setPresetService] = useState("Company Setup");
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [showFloatingBtn, setShowFloatingBtn] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 300) {
+        setShowFloatingBtn(true);
+      } else {
+        setShowFloatingBtn(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const openBooking = (service = "Company Setup") => {
     setPresetService(service);
@@ -84,12 +100,20 @@ export default function CompanySetupPage() {
               <ArrowLeft size={14} className="transition-transform group-hover:-translate-x-0.5" />
               Back to Home
             </Link>
-            <div className="flex items-center gap-2.5">
-              <span className="inline-block w-6 h-6 rounded bg-gradient-to-br from-[#F3C853] via-[#D4AF37] to-[#8a6d1f] grid place-items-center shadow-[0_0_10px_rgba(212,175,55,0.2)]">
-                <span className="text-black font-display font-bold text-xs">A</span>
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              className="flex items-center gap-2.5 group"
+              data-testid="brand-logo"
+            >
+              <img
+                src={BRAND.logoMark}
+                alt="Ask Array Tech"
+                className="w-8 h-8 rounded object-cover"
+              />
+              <span className="font-display text-lg md:text-xl text-white font-bold tracking-tight group-hover:text-gold md:inline-flex items-center gap-1.5">
+                Ask Array <span className="text-gold">Tech</span>
               </span>
-              <span className="text-xs text-white/40 font-medium tracking-wider uppercase">Ask Array Tech</span>
-            </div>
+            </button>
           </div>
 
           {/* Header */}
@@ -106,15 +130,51 @@ export default function CompanySetupPage() {
             </h1>
 
             <p className="mt-8 text-base md:text-lg text-white/60 leading-relaxed font-light">
-              Launch your business legally and securely with our end-to-end{" "}
-              <strong>company setup services for startups</strong>. Whether you require{" "}
-              <strong>private limited registration India</strong>, <strong>LLP registration services</strong>,{" "}
-              or <strong>Startup India registration</strong>, we manage the entire process under one execution partner. 
-              From initial name approval and incorporation documents to <strong>GST registration</strong> and{" "}
-              <strong>DPIIT registration assistance</strong>, we ensure your legal entity is fully compliant. 
-              Avoid coordinating between multiple vendors—our concierge team delivers MCA incorporation certificates, 
-              bank account setup, and a complete suite of <strong>startup legal documentation</strong> including founders' 
-              agreements, NDAs, and employment contracts to protect your venture from day one.
+              <span className="md:hidden">
+                {isExpanded ? (
+                  <>
+                    Launch your business legally and securely with our end-to-end{" "}
+                    <strong>company setup services for startups</strong>. Whether you require{" "}
+                    <strong>private limited registration India</strong>, <strong>LLP registration services</strong>,{" "}
+                    or <strong>Startup India registration</strong>, we manage the entire process under one execution partner.{" "}
+                    From initial name approval and incorporation documents to <strong>GST registration</strong> and{" "}
+                    <strong>DPIIT registration assistance</strong>, we ensure your legal entity is fully compliant.{" "}
+                    Avoid coordinating between multiple vendors—our concierge team delivers MCA incorporation certificates,{" "}
+                    bank account setup, and a complete suite of <strong>startup legal documentation</strong> including founders'{" "}
+                    agreements, NDAs, and employment contracts to protect your venture from day one.
+                    <button 
+                      onClick={() => setIsExpanded(false)} 
+                      className="text-[#D4AF37] font-semibold text-xs ml-1.5 hover:underline focus:outline-none"
+                    >
+                      Read Less
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    Launch your business legally and securely with our end-to-end{" "}
+                    <strong>company setup services for startups</strong>. Whether you require{" "}
+                    <strong>private limited registration India</strong>, <strong>LLP registration services</strong>,{" "}
+                    or <strong>Startup India registration</strong>, we manage the entire process...
+                    <button 
+                      onClick={() => setIsExpanded(true)} 
+                      className="text-[#D4AF37] font-semibold text-xs ml-1.5 hover:underline focus:outline-none"
+                    >
+                      Read More
+                    </button>
+                  </>
+                )}
+              </span>
+              <span className="hidden md:inline">
+                Launch your business legally and securely with our end-to-end{" "}
+                <strong>company setup services for startups</strong>. Whether you require{" "}
+                <strong>private limited registration India</strong>, <strong>LLP registration services</strong>,{" "}
+                or <strong>Startup India registration</strong>, we manage the entire process under one execution partner.{" "}
+                From initial name approval and incorporation documents to <strong>GST registration</strong> and{" "}
+                <strong>DPIIT registration assistance</strong>, we ensure your legal entity is fully compliant.{" "}
+                Avoid coordinating between multiple vendors—our concierge team delivers MCA incorporation certificates,{" "}
+                bank account setup, and a complete suite of <strong>startup legal documentation</strong> including founders'{" "}
+                agreements, NDAs, and employment contracts to protect your venture from day one.
+              </span>
             </p>
 
             <button
@@ -211,7 +271,7 @@ export default function CompanySetupPage() {
         </div>
       </main>
 
-      <Contact />
+      {/* <Contact /> */}
       <Footer />
 
       <BookingDialog
@@ -219,6 +279,35 @@ export default function CompanySetupPage() {
         onOpenChange={setBookingOpen}
         presetService={presetService}
       />
+
+      {/* Floating mobile CTA */}
+      <div 
+        className={`fixed bottom-6 left-4 right-4 z-50 md:hidden transition-all duration-500 transform ${
+          showFloatingBtn ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10 pointer-events-none"
+        }`}
+      >
+        <button
+          onClick={() => openBooking("Company Setup")}
+          className="w-full bg-[#D4AF37] hover:bg-[#F3C853] text-black rounded-2xl p-4 shadow-[0_12px_40px_rgba(212,175,55,0.4)] border border-[#F3C853]/25 flex items-center justify-between active:scale-95 transition-all duration-300 group"
+        >
+          <div className="flex items-center gap-3.5">
+            <span className="inline-grid place-items-center w-11 h-11 rounded-xl bg-black/10 text-black">
+              <Calendar size={20} className="stroke-[2.5]" />
+            </span>
+            <div className="text-left">
+              <p className="font-display font-extrabold text-xl tracking-tight leading-none text-black">
+                Book Strategy Call
+              </p>
+              <p className="text-[15px] font-medium text-black/60 mt-1.5 leading-none">
+                Serious founder don't delay  
+              </p>
+            </div>
+          </div>
+          <span className="inline-grid place-items-center w-9 h-9 rounded-xl bg-black/5 text-black">
+            <ArrowRight size={18} className="stroke-[2.5] transition-transform group-hover:translate-x-0.5" />
+          </span>
+        </button>
+      </div>
     </div>
   );
 }

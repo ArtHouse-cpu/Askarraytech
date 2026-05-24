@@ -70,7 +70,7 @@ export default function Hero({ onBookSlot }) {
                 <span className="inline gold-gradient-text">Startup.</span>
                 <span className="mt-2 md:mt-3 inline-block">Build Your </span>
                 <span className="gold-gradient-text inline"> Product.</span>
-                <span className="block text-gold  font-bold mt-4 md:mt-5">
+                <span className="mt-2 md:mt-3 inline-block">
                   Grow Faster.
                 </span>
               </h1>

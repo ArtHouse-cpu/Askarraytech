@@ -18,7 +18,7 @@ export default function Footer() {
               alt="Ask Array Tech"
               className="w-10 h-10 rounded-md"
             />
-           <span className="font-display text-lg md:text-xl text-white font-bold tracking-tight hidden sm:inline-flex items-center gap-1.5">
+         <span className="font-display text-lg md:text-xl text-white font-bold tracking-tight group-hover:text-gold md:inline-flex items-center gap-1.5">
             Ask Array <span className="text-gold">Tech</span>
           </span>
           </div>

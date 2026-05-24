@@ -1,5 +1,6 @@
+import { useEffect } from "react";
 import "@/App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { Toaster } from "sonner";
 import Landing from "@/pages/Landing";
 import AdminLogin from "@/pages/AdminLogin";
@@ -13,10 +14,37 @@ import MVPDevelopmentPage from "@/pages/MVPDevelopmentPage";
 import MarketingSetupPage from "@/pages/MarketingSetupPage";
 import IdeaToRevenuePage from "@/pages/IdeaToRevenuePage";
 
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+
+    // Temporarily override the global scroll-behavior: smooth on <html>
+    const html = document.documentElement;
+    const originalBehavior = html.style.scrollBehavior;
+    html.style.scrollBehavior = 'auto';
+
+    window.scrollTo(0, 0);
+
+    // Restore original scroll-behavior in the next frame to avoid breaking any other smooth scrolling
+    const timeoutId = setTimeout(() => {
+      html.style.scrollBehavior = originalBehavior;
+    }, 0);
+
+    return () => clearTimeout(timeoutId);
+  }, [pathname]);
+
+  return null;
+}
+
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/terms-and-conditions" element={<TermsAndConditions />} />

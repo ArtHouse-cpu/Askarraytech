@@ -45,7 +45,7 @@ export default function FinalCTA({ onBookSlot }) {
         </h2>
 
         <p className="mt-7 text-lg text-white/65 max-w-xl mx-auto leading-relaxed">
-          Apply for a strategy call. We'll get back personally within 24 business
+          Apply for a strategy call. We'll get back personally<br/> within 24 business
           hours.
         </p>
 

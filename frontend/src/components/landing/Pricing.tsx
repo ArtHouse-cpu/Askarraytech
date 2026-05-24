@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link ,useNavigate} from "react-router-dom";
 import { Check, Crown, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import DeliverablesDialog from "@/components/landing/DeliverablesDialog";
@@ -11,6 +11,7 @@ const PLAN_ROUTES = {
   "marketing-setup": "/marketing-setup",
   "idea-to-revenue": "/idea-to-revenue",
 };
+
 
 const PLANS = [
   {
@@ -87,6 +88,7 @@ const PLANS = [
 
 export default function Pricing({ onBookSlot }) {
   const [openPlan, setOpenPlan] = useState(null);
+  const navigate=useNavigate();
 
   return (
     <section

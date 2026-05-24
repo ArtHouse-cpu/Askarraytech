@@ -1,9 +1,9 @@
 // @ts-nocheck
 const STATS = [
-  { value: "50+", label: "Startups Supported" },
+  { value: "25+", label: "Startups Assisted" },
   { value: "30", label: "Day Launch Framework" },
-  { value: "1:1", label: "Dedicated Support" },
-  { value: "E2E", label: "Execution Coverage" },
+  { value: "100%", label: "Founder Focused" },
+  { value: "A→Z", label: "End-to-End Support" },
 ];
 
 export default function TrustBar() {
@@ -20,7 +20,7 @@ export default function TrustBar() {
               className="flex flex-col items-center md:items-start text-center md:text-left"
               data-testid={`trust-stat-${s.label.split(" ")[0].toLowerCase()}`}
             >
-              <p className="font-display text-3xl md:text-4xl text-white">
+              <p className="font-display text-3xl md:text-5xl font-bold text-white">
                 <span className="gold-gradient-text">{s.value}</span>
               </p>
               <p className="text-xs md:text-sm text-white/55 mt-1 uppercase tracking-widest">
