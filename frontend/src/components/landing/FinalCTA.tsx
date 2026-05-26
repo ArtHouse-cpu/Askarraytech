@@ -56,7 +56,7 @@ export default function FinalCTA({ onBookSlot }) {
             className="bg-[#D4AF37] hover:bg-[#F3C853] text-black font-semibold rounded-full px-10 py-7 text-base gold-button-glow group"
             data-testid="final-cta-book-btn"
           >
-            Book Your Slot
+            Let's Connect
             <ArrowRight
               size={18}
               className="ml-2 transition-transform group-hover:translate-x-1"
