@@ -52,7 +52,7 @@ export default function HowItWorks({ onBookSlot }) {
             className="self-start md:self-auto bg-black hover:bg-black/85 text-white rounded-full px-6 py-5"
             data-testid="process-book-slot-btn"
           >
-            Book Strategy Call
+            Let's Connect
           </Button>
         </div>
 

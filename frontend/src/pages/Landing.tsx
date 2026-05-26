@@ -91,7 +91,7 @@ export default function Landing() {
             </span>
             <div className="text-left">
               <p className="font-display font-extrabold text-xl tracking-tight leading-none text-black">
-                Book Strategy Call
+                Let's Connect
               </p>
               <p className="text-[15px] font-medium text-black/60 mt-1.5 leading-none">
                 Serious founder don't delay  

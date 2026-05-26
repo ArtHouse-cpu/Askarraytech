@@ -256,7 +256,7 @@ function PricingCard({ plan, onBookSlot, onShowDeliverables }) {
           }
           data-testid={`pricing-book-${plan.key}`}
         >
-          Book Strategy Call
+          Let's Connect
         </Button>
         <Link
           to={PLAN_ROUTES[plan.key]}

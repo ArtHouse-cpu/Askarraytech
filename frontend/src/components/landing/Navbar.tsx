@@ -32,7 +32,7 @@ export default function Navbar({ onBookSlot }) {
 
   return (
     <header
-      className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
+      className={`absolute top-0 inset-x-0 z-50 transition-all duration-300 ${
         scrolled ? "glass-navbar" : "bg-transparent"
       }`}
       data-testid="site-navbar"
@@ -72,7 +72,7 @@ export default function Navbar({ onBookSlot }) {
             className="hidden sm:inline-flex bg-[#D4AF37] hover:bg-[#F3C853] text-black font-medium rounded-full px-5 py-2.5 gold-button-glow group transition-all duration-300"
             data-testid="navbar-book-slot-btn"
           >
-            Start Now
+            Let's Connect
             <ArrowRight
               size={15}
               className="ml-1.5 transition-transform group-hover:translate-x-0.5"
@@ -110,7 +110,7 @@ export default function Navbar({ onBookSlot }) {
               className="bg-[#D4AF37] hover:bg-[#F3C853] text-black font-medium rounded-full mt-2"
               data-testid="navbar-mobile-book-slot-btn"
             >
-              Start Now
+              Let's Connect
             </Button>
           </div>
         </div>

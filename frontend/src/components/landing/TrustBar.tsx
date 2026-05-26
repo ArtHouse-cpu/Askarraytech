@@ -27,13 +27,13 @@ export default function TrustBar() {
               alt="Ankur Anand"
               className="absolute inset-0 w-full h-full object-cover object-top"
             />
-            <div className="absolute bottom-4 left-4 right-4 md:bottom-8 md:left-8 bg-[#111111] text-white p-6 md:p-8 rounded-3xl md:max-w-[320px] shadow-2xl">
+            <div className="absolute bottom-4 left-4 right-4 md:bottom-8 md:left-8 bg-black/30 backdrop-blur-md border border-white/10 text-white p-4 md:p-8 rounded-3xl md:max-w-[320px] shadow-2xl">
               <h3
                 style={{
                   fontFamily:
                     "'Brush Script MT', 'Dancing Script', 'Great Vibes', cursive",
                 }}
-                className="text-[#D4AF37] text-4xl md:text-5xl mb-3 tracking-wide font-normal"
+                className="text-yellow-500 text-4xl md:text-5xl mb-3 tracking-wide font-normal"
               >
                 Ankur Anand
               </h3>
@@ -147,7 +147,7 @@ export default function TrustBar() {
               </div>
               <div className="flex flex-col justify-center h-full">
                 <h4 className="font-bold text-lg md:text-xl text-black mb-1">
-                  50+
+                  25+
                 </h4>
                 <p className="text-[11px] md:text-xs text-gray-600 font-medium leading-snug">
                   Startups Supported

@@ -181,7 +181,7 @@ export default function CompanySetupPage() {
               onClick={() => openBooking()}
               className="mt-8 bg-[#D4AF37] hover:bg-[#F3C853] text-black font-semibold rounded-full px-8 py-4 text-base h-auto gold-button-glow inline-flex items-center gap-2 group transition-all duration-300"
             >
-              Book Strategy Call
+              Let's Connect
               <ArrowRight size={16} className="transition-transform group-hover:translate-x-0.5" />
             </button>
           </div>
@@ -296,7 +296,7 @@ export default function CompanySetupPage() {
             </span>
             <div className="text-left">
               <p className="font-display font-extrabold text-xl tracking-tight leading-none text-black">
-                Book Strategy Call
+                Let's Connect
               </p>
               <p className="text-[15px] font-medium text-black/60 mt-1.5 leading-none">
                 Serious founder don't delay  
