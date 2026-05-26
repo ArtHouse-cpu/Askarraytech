@@ -246,10 +246,12 @@ export default function BookingDialog({ open, onOpenChange, presetService }) {
       }}
     >
       <DialogContent
-        className="max-w-lg bg-[#0a0a0a] border-[#D4AF37]/25 text-white max-h-[92vh] overflow-y-auto"
+        className="w-[95%] sm:w-full max-w-lg rounded-2xl sm:rounded-2xl bg-[#0a0a0a] border-[#D4AF37]/25 text-white max-h-[92vh] overflow-y-auto p-5 sm:p-6"
         data-testid="booking-dialog"
       >
-        <Stepper step={step} />
+        <div className="hidden sm:block">
+          <Stepper step={step} />
+        </div>
 
         {step === "lead" && (
           <LeadStep
@@ -324,10 +326,10 @@ function LeadStep({ form, onChange, setForm, onSubmit, loading }) {
     <>
       <DialogHeader>
         <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-gold">
-          <Sparkles size={12} /> Step 1 of 3
+          {/* <Sparkles size={12} /> Step 1 of 3 */}
         </div>
         <DialogTitle className="font-display text-2xl mt-2">
-          Tell us about your startup
+         Let's Connect ASAP
         </DialogTitle>
         <DialogDescription className="text-white/60">
           We read every application personally before booking the call.
@@ -335,7 +337,7 @@ function LeadStep({ form, onChange, setForm, onSubmit, loading }) {
       </DialogHeader>
 
       <form onSubmit={onSubmit} className="space-y-4 mt-3">
-        <div className="grid grid-cols-2 gap-3">
+        <div>
           <Field
             label="Full Name"
             id="b-name"
@@ -347,17 +349,8 @@ function LeadStep({ form, onChange, setForm, onSubmit, loading }) {
             minLength={2}
             testid="booking-input-name"
           />
-          <Field
-            label="City"
-            id="b-city"
-            name="city"
-            value={form.city}
-            onChange={onChange}
-            placeholder="Bengaluru, Mumbai…"
-            testid="booking-input-city"
-          />
         </div>
-        <div className="grid grid-cols-2 gap-3">
+        <div>
           <Field
             label="Email"
             id="b-email"
@@ -369,6 +362,8 @@ function LeadStep({ form, onChange, setForm, onSubmit, loading }) {
             required
             testid="booking-input-email"
           />
+        </div>
+        <div className="grid grid-cols-2 gap-3">
           <Field
             label="Phone"
             id="b-phone"
@@ -379,45 +374,32 @@ function LeadStep({ form, onChange, setForm, onSubmit, loading }) {
             required
             testid="booking-input-phone"
           />
-        </div>
-
-        <div>
-          <Label className="text-white/80">Service Required</Label>
-          <Select
-            value={form.service_needed}
-            onValueChange={(v) => setForm((f) => ({ ...f, service_needed: v }))}
-          >
-            <SelectTrigger
-              className="mt-1.5 bg-white/5 border-white/10 text-white"
-              data-testid="booking-select-service"
-            >
-              <SelectValue placeholder="Select a track" />
-            </SelectTrigger>
-            <SelectContent className="bg-[#111] text-white border-white/10">
-              {SERVICE_OPTIONS.map((s) => (
-                <SelectItem key={s} value={s}>
-                  {s}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <Field
+            label="City"
+            id="b-city"
+            name="city"
+            value={form.city}
+            onChange={onChange}
+            placeholder="Bengaluru, Mumbai…"
+            testid="booking-input-city"
+          />
         </div>
 
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <Label className="text-white/80">Budget Range</Label>
+            <Label className="text-white/80">Service Required</Label>
             <Select
-              value={form.budget_range}
-              onValueChange={(v) => setForm((f) => ({ ...f, budget_range: v }))}
+              value={form.service_needed}
+              onValueChange={(v) => setForm((f) => ({ ...f, service_needed: v }))}
             >
               <SelectTrigger
                 className="mt-1.5 bg-white/5 border-white/10 text-white"
-                data-testid="booking-select-budget"
+                data-testid="booking-select-service"
               >
-                <SelectValue placeholder="Pick a range" />
+                <SelectValue placeholder="Select a track" />
               </SelectTrigger>
               <SelectContent className="bg-[#111] text-white border-white/10">
-                {BUDGET_OPTIONS.map((s) => (
+                {SERVICE_OPTIONS.map((s) => (
                   <SelectItem key={s} value={s}>
                     {s}
                   </SelectItem>
@@ -451,6 +433,28 @@ function LeadStep({ form, onChange, setForm, onSubmit, loading }) {
         </div>
 
         <div>
+          <Label className="text-white/80">Budget Range</Label>
+          <Select
+            value={form.budget_range}
+            onValueChange={(v) => setForm((f) => ({ ...f, budget_range: v }))}
+          >
+            <SelectTrigger
+              className="mt-1.5 bg-white/5 border-white/10 text-white"
+              data-testid="booking-select-budget"
+            >
+              <SelectValue placeholder="Pick a range" />
+            </SelectTrigger>
+            <SelectContent className="bg-[#111] text-white border-white/10">
+              {BUDGET_OPTIONS.map((s) => (
+                <SelectItem key={s} value={s}>
+                  {s}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div>
           <Label htmlFor="b-idea" className="text-white/80">
             Startup Idea
           </Label>
@@ -476,7 +480,7 @@ function LeadStep({ form, onChange, setForm, onSubmit, loading }) {
         >
           {loading ? "Saving…" : (
             <>
-              Continue to Slot
+              Continue
               <ArrowRight size={16} className="ml-2 transition-transform group-hover:translate-x-1" />
             </>
           )}
@@ -526,7 +530,7 @@ function SlotStep({
         </div>
       ) : (
         <div
-          className="mt-2 grid grid-cols-2 gap-2 max-h-72 overflow-y-auto pr-1"
+          className="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-72 overflow-y-auto pr-1"
           data-testid="booking-slots-grid"
         >
           {slots.map((s) => (

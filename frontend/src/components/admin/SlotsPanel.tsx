@@ -11,8 +11,6 @@ import SlotDetailsModal from "./modal/SlotDetailsModal";
 export default function SlotsPanel({ bookings = [], onMutate }) {
   const [slots, setSlots] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  // Form: date + time (local) → combined to ISO with timezone offset
   const [date, setDate] = useState("");
   const [time, setTime] = useState("10:00");
   const [creating, setCreating] = useState(false);
@@ -21,9 +19,12 @@ export default function SlotsPanel({ bookings = [], onMutate }) {
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const today = new Date();
+  const minDate = today.toLocaleDateString("en-CA");
   const load = async () => {
     try {
       const { data } = await api.get("/admin/slots");
+       console.log("Data",data);
       setSlots(data);
     } catch (err) {
       toast.error(getApiErrorMessage(err.response?.data?.detail));
@@ -31,6 +32,8 @@ export default function SlotsPanel({ bookings = [], onMutate }) {
       setLoading(false);
     }
   };
+
+ 
 
   useEffect(() => {
     load();
@@ -63,8 +66,7 @@ export default function SlotsPanel({ bookings = [], onMutate }) {
       onMutate?.();
     } catch (err) {
       toast.error(
-        getApiErrorMessage(err.response?.data?.detail) ||
-          "Could not add slot."
+        getApiErrorMessage(err.response?.data?.detail) || "Could not add slot.",
       );
     } finally {
       setCreating(false);
@@ -81,7 +83,7 @@ export default function SlotsPanel({ bookings = [], onMutate }) {
     } catch (err) {
       toast.error(
         getApiErrorMessage(err.response?.data?.detail) ||
-          "Could not delete slot."
+          "Could not delete slot.",
       );
     }
   };
@@ -100,7 +102,7 @@ export default function SlotsPanel({ bookings = [], onMutate }) {
   const selectedBooking = useMemo(() => {
     if (!selectedSlot) return null;
     return bookings.find(
-      (b) => b.slot_id === selectedSlot.id || b.id === selectedSlot.booking_id
+      (b) => b.slot_id === selectedSlot.id || b.id === selectedSlot.booking_id,
     );
   }, [selectedSlot, bookings]);
 
@@ -120,10 +122,12 @@ export default function SlotsPanel({ bookings = [], onMutate }) {
         data-testid="slot-create-form"
       >
         <h3 className="font-display text-lg flex items-center gap-2 text-white">
-          <CalendarClock size={16} className="text-gold animate-pulse" /> Add a 30-min slot
+          <CalendarClock size={16} className="text-gold animate-pulse" /> Add a
+          30-min slot
         </h3>
         <p className="text-white/45 text-xs mt-1 leading-relaxed">
-          Created slots will be visible to founders looking to schedule a consultation.
+          Created slots will be visible to founders looking to schedule a
+          consultation.
         </p>
         <div className="mt-6 space-y-4">
           <div>
@@ -135,6 +139,7 @@ export default function SlotsPanel({ bookings = [], onMutate }) {
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
+              min={minDate}
               className="mt-1.5 bg-white/5 border-white/10 text-white rounded-xl focus:border-gold/50"
               data-testid="slot-date-input"
               required
@@ -171,13 +176,17 @@ export default function SlotsPanel({ bookings = [], onMutate }) {
         className="rounded-2xl glass-dark p-6 border border-white/5 shadow-2xl"
         data-testid="slots-list"
       >
-        <h3 className="font-display text-lg text-white mb-1">Available Schedule</h3>
+        <h3 className="font-display text-lg text-white mb-1">
+          Available Schedule
+        </h3>
         <p className="text-white/45 text-xs mb-6">
           Booked slots can be clicked to view customer and meeting details.
         </p>
 
         {loading ? (
-          <div className="p-12 text-center text-white/45 animate-pulse">Loading slots…</div>
+          <div className="p-12 text-center text-white/45 animate-pulse">
+            Loading slots…
+          </div>
         ) : slots.length === 0 ? (
           <div className="p-12 text-center text-white/45 bg-white/[0.01] border border-dashed border-white/10 rounded-2xl">
             No slots scheduled yet. Set one up on the left panel.
@@ -208,7 +217,8 @@ export default function SlotsPanel({ bookings = [], onMutate }) {
                         <div className="flex items-center gap-1.5 mt-1.5">
                           {s.is_booked ? (
                             <span className="inline-flex items-center gap-1 text-[10px] uppercase font-bold text-gold tracking-wider">
-                              <Lock size={10} className="animate-pulse" /> Booked
+                              <Lock size={10} className="animate-pulse" />{" "}
+                              Booked
                             </span>
                           ) : (
                             <span className="inline-flex items-center gap-1 text-[10px] uppercase font-bold text-white/35 tracking-wider">
