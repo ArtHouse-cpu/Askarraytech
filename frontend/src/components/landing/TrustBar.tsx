@@ -29,19 +29,20 @@ export default function TrustBar() {
             />
             <div className="absolute bottom-4 left-4 right-4 md:bottom-8 md:left-8 bg-black/30 backdrop-blur-md border border-white/10 text-white p-4 md:p-8 rounded-3xl md:max-w-[320px] shadow-2xl">
               <h3
-                style={{
-                  fontFamily:
-                    "'Brush Script MT', 'Dancing Script', 'Great Vibes', cursive",
-                }}
-                className="text-yellow-500 text-4xl md:text-5xl mb-3 tracking-wide font-normal"
-              >
-                Ankur Anand
-              </h3>
+  style={{
+    fontFamily:
+      "'Brush Script MT', 'Dancing Script', 'Great Vibes', cursive",
+  }}
+  className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-200 to-white text-4xl md:text-5xl mb-3 tracking-wide font-normal"
+>
+  Ankur Anand
+</h3>
               <p className="font-bold text-lg md:text-xl mb-1">Founder</p>
               <p className="text-sm text-gray-300 font-medium tracking-wide">
                 Founder • Builder • Operator
               </p>
-              <div className="w-full h-[1px] bg-gray-700/50 my-5"></div>
+              {/* <div className="w-full h-[1.5px] bg-gray-700/50 my-5"></div> */}
+              <br/>
               <div className="bg-[#D4AF37] p-1.5 rounded-lg inline-flex items-center justify-center">
                 <a
                   href="https://www.linkedin.com/in/2004-ankur-anand"
@@ -114,7 +115,7 @@ export default function TrustBar() {
               </div>
             </div>
 
-            <div className="mt-8 flex flex-col xl:flex-row items-center xl:items-start gap-6 pt-6">
+            <div className="mt-8 flex flex-col-reverse xl:flex-row items-center xl:items-start gap-6 pt-6">
               <button 
                 onClick={() => setIsBookingOpen(true)}
                 className="w-full xl:w-auto bg-[#0a0a0a] text-[#D4AF37] px-8 py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-black transition-colors shrink-0"
