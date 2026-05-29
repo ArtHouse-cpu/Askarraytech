@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { useState } from "react";
-import { Link ,useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Check, Crown, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import DeliverablesDialog from "@/components/landing/DeliverablesDialog";
@@ -12,13 +12,13 @@ const PLAN_ROUTES = {
   "idea-to-revenue": "/idea-to-revenue",
 };
 
-
 const PLANS = [
   {
     key: "company-setup",
     name: "Company Setup",
     price: "₹39,999",
     tagline: "Get legal. Get serious.",
+    timeline: "21",
     features: [
       "OPC / LLP / Private Limited",
       "GST Registration",
@@ -38,6 +38,7 @@ const PLANS = [
     name: "Product MVP",
     price: "Starts at ₹34,999+",
     tagline: "Ship the thing.",
+    timeline: "07",
     features: [
       "Website Development",
       "Web & Mobile Apps",
@@ -56,6 +57,7 @@ const PLANS = [
     name: "Marketing Setup",
     price: "₹24,999",
     tagline: "Launch loud. Launch ready.",
+    timeline: "03",
     features: [
       "Logo Setup & Brand Kit",
       "Social: LinkedIn, FB, Instagram, WhatsApp Channel",
@@ -71,6 +73,7 @@ const PLANS = [
     price: "₹99,000",
     tagline: "The complete launch operating system.",
     badge: "Most Popular",
+    timeline: "30",
     features: [
       "Company Setup",
       "Product MVP",
@@ -88,7 +91,7 @@ const PLANS = [
 
 export default function Pricing({ onBookSlot }) {
   const [openPlan, setOpenPlan] = useState(null);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   return (
     <section
@@ -173,12 +176,38 @@ function PricingCard({ plan, onBookSlot, onShowDeliverables }) {
         >
           {plan.tagline}
         </p>
-        <div className="mt-5">
+        <div
+          className={[
+            "mt-5 rounded-lg px-4 py-3 border flex items-center justify-between",
+            isAccent
+              ? "border-[#D4AF37]/30 bg-[#D4AF37]/10"
+              : "border-black/10 bg-black/[0.03]",
+          ].join(" ")}
+        >
           <span
-            className={`font-display text-3xl ${isAccent ? "gold-gradient-text" : "text-black"}`}
+            className={[
+              "text-[11px] font-semibold uppercase tracking-wider",
+              isAccent ? "text-[#D4AF37]" : "text-[#8a6d1f]",
+            ].join(" ")}
           >
-            {plan.price}
+             Timeline
           </span>
+          <div className="flex items-baseline gap-1">
+            <span
+              className={`font-display text-3xl font-bold tracking-tight ${
+                isAccent ? "text-white" : "text-black"
+              }`}
+            >
+              {plan.timeline}
+            </span>
+            <span
+              className={`text-xs font-medium ${
+                isAccent ? "text-white/70" : "text-black/70"
+              }`}
+            >
+              Days
+            </span>
+          </div>
         </div>
       </div>
 

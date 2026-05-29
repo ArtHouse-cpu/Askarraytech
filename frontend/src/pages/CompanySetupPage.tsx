@@ -288,7 +288,7 @@ export default function CompanySetupPage() {
       >
         <button
           onClick={() => openBooking("Company Setup")}
-          className="w-full bg-[#D4AF37] hover:bg-[#F3C853] text-black rounded-2xl p-4 shadow-[0_12px_40px_rgba(212,175,55,0.4)] border border-[#F3C853]/25 flex items-center justify-between active:scale-95 transition-all duration-300 group"
+          className="w-full bg-[#D4AF37] hover:bg-[#F3C853] text-black rounded-2xl p-2.5 shadow-[0_12px_40px_rgba(212,175,55,0.4)] border border-[#F3C853]/25 flex items-center justify-between active:scale-95 transition-all duration-300 group"
         >
           <div className="flex items-center gap-3.5">
             <span className="inline-grid place-items-center w-11 h-11 rounded-xl bg-black/10 text-black">
