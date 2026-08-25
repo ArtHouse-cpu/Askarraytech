@@ -83,7 +83,7 @@ export default function Landing() {
       >
         <button
           onClick={() => openBooking("General Consultation")}
-          className="w-full bg-[#D4AF37] hover:bg-[#F3C853] text-black rounded-2xl p-4 shadow-[0_12px_40px_rgba(212,175,55,0.4)] border border-[#F3C853]/25 flex items-center justify-between active:scale-95 transition-all duration-300 group"
+          className="w-full bg-[#D4AF37] hover:bg-[#F3C853] text-black rounded-2xl p-3 shadow-[0_12px_40px_rgba(212,175,55,0.4)] border border-[#F3C853]/25 flex items-center justify-between active:scale-95 transition-all duration-300 group"
         >
           <div className="flex items-center gap-3.5">
             <span className="inline-grid place-items-center w-11 h-11 rounded-xl bg-black/10 text-black">
@@ -91,7 +91,7 @@ export default function Landing() {
             </span>
             <div className="text-left">
               <p className="font-display font-extrabold text-xl tracking-tight leading-none text-black">
-                Book Strategy Call
+                Let's Connect
               </p>
               <p className="text-[15px] font-medium text-black/60 mt-1.5 leading-none">
                 Serious founder don't delay  

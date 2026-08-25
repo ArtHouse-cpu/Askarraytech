@@ -326,10 +326,10 @@ function LeadStep({ form, onChange, setForm, onSubmit, loading }) {
     <>
       <DialogHeader>
         <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-gold">
-          <Sparkles size={12} /> Step 1 of 3
+          {/* <Sparkles size={12} /> Step 1 of 3 */}
         </div>
         <DialogTitle className="font-display text-2xl mt-2">
-          Tell us about your startup
+         Let's Connect ASAP
         </DialogTitle>
         <DialogDescription className="text-white/60">
           We read every application personally before booking the call.
@@ -480,7 +480,7 @@ function LeadStep({ form, onChange, setForm, onSubmit, loading }) {
         >
           {loading ? "Saving…" : (
             <>
-              Continue to Slot
+              Continue
               <ArrowRight size={16} className="ml-2 transition-transform group-hover:translate-x-1" />
             </>
           )}

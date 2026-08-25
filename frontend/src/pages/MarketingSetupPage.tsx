@@ -153,7 +153,7 @@ export default function MarketingSetupPage() {
               onClick={() => openBooking()}
               className="mt-8 bg-[#D4AF37] hover:bg-[#F3C853] text-black font-semibold rounded-full px-8 py-4 text-base h-auto gold-button-glow inline-flex items-center gap-2 group transition-all duration-300"
             >
-              Book Strategy Call
+              Let's Connect
               <ArrowRight size={16} className="transition-transform group-hover:translate-x-0.5" />
             </button>
           </div>
@@ -260,7 +260,7 @@ export default function MarketingSetupPage() {
       >
         <button
           onClick={() => openBooking("Marketing Setup")}
-          className="w-full bg-[#D4AF37] hover:bg-[#F3C853] text-black rounded-2xl p-4 shadow-[0_12px_40px_rgba(212,175,55,0.4)] border border-[#F3C853]/25 flex items-center justify-between active:scale-95 transition-all duration-300 group"
+          className="w-full p bg-[#D4AF37] hover:bg-[#F3C853] text-black rounded-2xl p-3 shadow-[0_12px_40px_rgba(212,175,55,0.4)] border border-[#F3C853]/25 flex items-center justify-between active:scale-95 transition-all duration-300 group"
         >
           <div className="flex items-center gap-3.5">
             <span className="inline-grid place-items-center w-11 h-11 rounded-xl bg-black/10 text-black">
@@ -268,7 +268,7 @@ export default function MarketingSetupPage() {
             </span>
             <div className="text-left">
               <p className="font-display font-extrabold text-xl tracking-tight leading-none text-black">
-                Book Strategy Call
+                Let's Connect
               </p>
               <p className="text-[15px] font-medium text-black/60 mt-1.5 leading-none">
                 Serious founder don't delay  

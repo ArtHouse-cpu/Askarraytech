@@ -61,6 +61,9 @@ const createContact = async (req, res) => {
 };
 
 const getAvailableSlots = async (req, res) => {
+  // Automatically remove old available slots that are not booked
+  await SlotModel.deleteMany({ is_booked: false, start_at: { $lt: nowIso() } });
+
   const items = await SlotModel.find({ is_booked: false, start_at: { $gt: nowIso() } }, { _id: 0, __v: 0 }).sort({ start_at: 1 });
   res.json(items);
 };
