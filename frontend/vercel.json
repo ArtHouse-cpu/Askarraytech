@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/bizrv",
+      "destination": "https://askarraybizrv.vercel.app/"
+    },
+    {
+      "source": "/bizrv/:path*",
+      "destination": "https://askarraybizrv.vercel.app/:path*"
+    }
+  ]
+}
