@@ -9,12 +9,14 @@ import publicRouter from './routes/PublicRouter.js';
 import paymentRouter from './routes/PaymentRouter.js';
 import authRouter from './routes/AuthRouter.js';
 import adminRouter from './routes/AdminRouter.js';
+import bizrvRouterLead from './routes/BizrvRouter.js';
+import couponRouter from './routes/CouponRouter.js';
 import { stripeWebhook } from './controllers/paymentController.js';
 
 const app = express();
 
 app.use(cors({
-  origin: process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(',') : '*',
+  origin: true,
   credentials: true,
 }));
 
@@ -28,6 +30,8 @@ app.use('/api', publicRouter);
 app.use('/api', paymentRouter);
 app.use('/api', authRouter);
 app.use('/api', adminRouter);
+app.use('/api', bizrvRouterLead);
+app.use('/api', couponRouter);
 
 // Database Seeding Logic
 const DEFAULT_PORTFOLIO = [
@@ -142,7 +146,7 @@ const startServer = async () => {
     app.get("/", (req, res) => {
       res.send("🚀 Server is live and running...");
     });
-    const PORT = process.env.PORT || 3000;
+    const PORT = process.env.PORT || 4000;
     app.listen(PORT, () => {
       console.log(`Server listening on port ${PORT}`);
     });

@@ -4,6 +4,8 @@ import { SlotModel } from './Slot.js';
 import { PortfolioModel } from './Portfolio.js';
 import { UserModel } from './User.js';
 import { PaymentTransactionModel } from './PaymentTransaction.js';
+import { BizrvLeadModel } from './BizrvLead.js';
+import { CouponModel } from './Coupon.js';
 
 export {
   BookingModel,
@@ -12,4 +14,6 @@ export {
   PortfolioModel,
   UserModel,
   PaymentTransactionModel,
+  BizrvLeadModel,
+  CouponModel,
 };
