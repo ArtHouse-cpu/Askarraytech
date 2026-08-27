@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { CouponModel } from '../models/index.js';
+import { resolveValidCoupon } from '../utils/resolveCoupon.js';
 
 const DISCOUNT_TYPES = ['percentage', 'fixed'];
 
@@ -93,6 +94,24 @@ const getCoupons = async (req, res) => {
   }
 };
 
+const validateCoupon = async (req, res) => {
+  try {
+    const code = req.body?.code || req.body?.couponCode || req.query?.code;
+    const resolved = await resolveValidCoupon(code);
+    if (resolved.error) {
+      return fail(res, 400, resolved.error);
+    }
+    return res.json({
+      success: true,
+      message: resolved.pricing.couponCode ? 'Coupon applied successfully' : 'No coupon applied',
+      data: resolved.pricing,
+    });
+  } catch (err) {
+    console.error('validateCoupon failed:', err);
+    return fail(res, 500, 'Failed to validate coupon');
+  }
+};
+
 const deleteCoupon = async (req, res) => {
   try {
     const { id } = req.params;
@@ -117,4 +136,4 @@ const deleteCoupon = async (req, res) => {
   }
 };
 
-export { createCoupon, getCoupons, deleteCoupon };
+export { createCoupon, getCoupons, deleteCoupon, validateCoupon };

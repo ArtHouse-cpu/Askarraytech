@@ -19,6 +19,11 @@ const BizrvLeadSchema = new Schema({
     required: true,
   },
   source: { type: String, default: 'get_started_modal' },
+  paymentStatus: { type: String, default: 'unpaid' },
+  amountPaid: Number,
+  couponCode: String,
+  razorpayOrderId: String,
+  razorpayPaymentId: String,
   created_at: String,
 });
 

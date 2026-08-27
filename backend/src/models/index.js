@@ -6,6 +6,7 @@ import { UserModel } from './User.js';
 import { PaymentTransactionModel } from './PaymentTransaction.js';
 import { BizrvLeadModel } from './BizrvLead.js';
 import { CouponModel } from './Coupon.js';
+import { BizrvOrderModel } from './BizrvOrder.js';
 
 export {
   BookingModel,
@@ -16,4 +17,5 @@ export {
   PaymentTransactionModel,
   BizrvLeadModel,
   CouponModel,
+  BizrvOrderModel,
 };
